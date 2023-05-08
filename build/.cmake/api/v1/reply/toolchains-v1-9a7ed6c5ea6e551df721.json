@@ -1,0 +1,25 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "Microsoft Visual Studio",
+				"implicit" : {},
+				"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/csc.exe",
+				"version" : "4.4.0"
+			},
+			"language" : "CSharp",
+			"sourceFileExtensions" : 
+			[
+				"cs"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x86</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EC4484BF-A677-3222-8A35-549F3F8699F8}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Platform>win32</Platform>
+    <ProjectName>main</ProjectName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+    <ManagedAssembly>true</ManagedAssembly>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'" Label="Configuration">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <OutputPath>C:\Users\benko\source\repos\reMind me\reMind me\build\Debug\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <PlatformToolset>v143</PlatformToolset>
+    <AssemblyName>main</AssemblyName>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Users\benko\source\repos\reMind me\reMind me\build\Debug\main.exe</StartProgram>
+    <DebugType>full</DebugType>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <Optimize>false</Optimize>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'" Label="Configuration">
+    <OutputPath>C:\Users\benko\source\repos\reMind me\reMind me\build\Release\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <PlatformToolset>v143</PlatformToolset>
+    <AssemblyName>main</AssemblyName>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Users\benko\source\repos\reMind me\reMind me\build\Release\main.exe</StartProgram>
+    <DebugType>none</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>queue</ErrorReport>
+    <Optimize>true</Optimize>
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'" Label="Configuration">
+    <OutputPath>C:\Users\benko\source\repos\reMind me\reMind me\build\MinSizeRel\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <PlatformToolset>v143</PlatformToolset>
+    <AssemblyName>main</AssemblyName>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Users\benko\source\repos\reMind me\reMind me\build\MinSizeRel\main.exe</StartProgram>
+    <DebugType>none</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'" Label="Configuration">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <OutputPath>C:\Users\benko\source\repos\reMind me\reMind me\build\RelWithDebInfo\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <PlatformToolset>v143</PlatformToolset>
+    <AssemblyName>main</AssemblyName>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Users\benko\source\repos\reMind me\reMind me\build\RelWithDebInfo\main.exe</StartProgram>
+    <DebugType>full</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.CSharp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.CSharp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemGroup>
+    <None Include="C:\Users\benko\source\repos\reMind me\reMind me\CMakeLists.txt">
+      <Link>CMakeLists.txt</Link>
+    </None>
+  </ItemGroup>
+  <Target Condition="'$(Configuration)|$(Platform)'=='Debug|win32'"
+    Name="CustomCommand_Debug_99cc3bfd0d413231129e660646fb47f2"
+    Inputs="C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeCSharpInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CSharpUtilities.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeCSharpCompiler.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeSystem.cmake"
+    Outputs="C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\generate.stamp">
+    <Exec Command="echo Building Custom Rule C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt" />
+    <Exec Command="setlocal&#10;&quot;C:\Program Files\CMake\bin\cmake.exe&quot; &quot;-SC:/Users/benko/source/repos/reMind me/reMind me&quot; &quot;-BC:/Users/benko/source/repos/reMind me/reMind me/build&quot; --check-stamp-file &quot;C:/Users/benko/source/repos/reMind me/reMind me/build/CMakeFiles/generate.stamp&quot;&#10;if %errorlevel% neq 0 goto :cmEnd&#10;:cmEnd&#10;endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone&#10;:cmErrorLevel&#10;exit /b %1&#10;:cmDone&#10;if %errorlevel% neq 0 goto :VCEnd&#10;:VCEnd" />
+  </Target>
+  <Target Condition="'$(Configuration)|$(Platform)'=='Release|win32'"
+    Name="CustomCommand_Release_99cc3bfd0d413231129e660646fb47f2"
+    Inputs="C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeCSharpInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CSharpUtilities.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeCSharpCompiler.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeSystem.cmake"
+    Outputs="C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\generate.stamp">
+    <Exec Command="echo Building Custom Rule C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt" />
+    <Exec Command="setlocal&#10;&quot;C:\Program Files\CMake\bin\cmake.exe&quot; &quot;-SC:/Users/benko/source/repos/reMind me/reMind me&quot; &quot;-BC:/Users/benko/source/repos/reMind me/reMind me/build&quot; --check-stamp-file &quot;C:/Users/benko/source/repos/reMind me/reMind me/build/CMakeFiles/generate.stamp&quot;&#10;if %errorlevel% neq 0 goto :cmEnd&#10;:cmEnd&#10;endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone&#10;:cmErrorLevel&#10;exit /b %1&#10;:cmDone&#10;if %errorlevel% neq 0 goto :VCEnd&#10;:VCEnd" />
+  </Target>
+  <Target Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|win32'"
+    Name="CustomCommand_MinSizeRel_99cc3bfd0d413231129e660646fb47f2"
+    Inputs="C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeCSharpInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CSharpUtilities.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeCSharpCompiler.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeSystem.cmake"
+    Outputs="C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\generate.stamp">
+    <Exec Command="echo Building Custom Rule C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt" />
+    <Exec Command="setlocal&#10;&quot;C:\Program Files\CMake\bin\cmake.exe&quot; &quot;-SC:/Users/benko/source/repos/reMind me/reMind me&quot; &quot;-BC:/Users/benko/source/repos/reMind me/reMind me/build&quot; --check-stamp-file &quot;C:/Users/benko/source/repos/reMind me/reMind me/build/CMakeFiles/generate.stamp&quot;&#10;if %errorlevel% neq 0 goto :cmEnd&#10;:cmEnd&#10;endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone&#10;:cmErrorLevel&#10;exit /b %1&#10;:cmDone&#10;if %errorlevel% neq 0 goto :VCEnd&#10;:VCEnd" />
+  </Target>
+  <Target Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|win32'"
+    Name="CustomCommand_RelWithDebInfo_99cc3bfd0d413231129e660646fb47f2"
+    Inputs="C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeCSharpInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\CSharpUtilities.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeCSharpCompiler.cmake;C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\3.24.0\CMakeSystem.cmake"
+    Outputs="C:\Users\benko\source\repos\reMind me\reMind me\build\CMakeFiles\generate.stamp">
+    <Exec Command="echo Building Custom Rule C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt" />
+    <Exec Command="setlocal&#10;&quot;C:\Program Files\CMake\bin\cmake.exe&quot; &quot;-SC:/Users/benko/source/repos/reMind me/reMind me&quot; &quot;-BC:/Users/benko/source/repos/reMind me/reMind me/build&quot; --check-stamp-file &quot;C:/Users/benko/source/repos/reMind me/reMind me/build/CMakeFiles/generate.stamp&quot;&#10;if %errorlevel% neq 0 goto :cmEnd&#10;:cmEnd&#10;endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone&#10;:cmErrorLevel&#10;exit /b %1&#10;:cmDone&#10;if %errorlevel% neq 0 goto :VCEnd&#10;:VCEnd" />
+  </Target>
+  <ItemGroup>
+    <Compile Include="C:\Users\benko\source\repos\reMind me\reMind me\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\benko\source\repos\reMind me\reMind me\build\ZERO_CHECK.vcxproj">
+      <Project>{7344F53B-0207-31CB-8E99-2842C9DBEAC4}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'MinSizeRel'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'RelWithDebInfo'">
+  </PropertyGroup>
+  <PropertyGroup>
+    <BuildDependsOn>
+      CustomCommand_Debug_99cc3bfd0d413231129e660646fb47f2;
+      CustomCommand_MinSizeRel_99cc3bfd0d413231129e660646fb47f2;
+      CustomCommand_RelWithDebInfo_99cc3bfd0d413231129e660646fb47f2;
+      CustomCommand_Release_99cc3bfd0d413231129e660646fb47f2;
+      $(BuildDependsOn)
+</BuildDependsOn>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,10 @@
+^C:\USERS\BENKO\SOURCE\REPOS\REMIND ME\REMIND ME\BUILD\CMAKEFILES\3B7240DFEA4E8652A04DA0D890DEAD31\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/benko/source/repos/reMind me/reMind me" "-BC:/Users/benko/source/repos/reMind me/reMind me/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/benko/source/repos/reMind me/reMind me/build/reMind.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

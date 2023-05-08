@@ -1,0 +1,12 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.24/Modules/CMakeCSharpInformation.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/CSharpUtilities.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.24/Modules/Platform/WindowsPaths.cmake
+C:/Users/benko/source/repos/reMind me/reMind me/CMakeLists.txt
+C:/Users/benko/source/repos/reMind me/reMind me/build/CMakeFiles/3.24.0/CMakeCSharpCompiler.cmake
+C:/Users/benko/source/repos/reMind me/reMind me/build/CMakeFiles/3.24.0/CMakeSystem.cmake
