@@ -28,8 +28,8 @@ String input = "NULL";
 
 // Class Imports
 DateManager date = new DateManager();
-FlatFile_Manager flat = new FlatFile_Manager();
-Interface_Manager ui = new Interface_Manager();
+FlatFileManager flat = new FlatFileManager();
+InterfaceManager ui = new InterfaceManager(taskInstances);
 
 
 void setup() {
@@ -75,7 +75,7 @@ void setup() {
 /** Opens up and reads the database, importing data
  */
 void parseDB() {
-    List<List<string>> databaseParsed = flat.parseFlatFile(DB_PATH, FlatFile_Manager.flatFileType.Database);
+    List<List<string>> databaseParsed = flat.parseFlatFile(DB_PATH, FlatFileManager.flatFileType.Database);
     string[] fullName = {
         databaseParsed[0][0],
         databaseParsed[0][1]
@@ -92,14 +92,14 @@ void parseDB() {
  */
 Task<List<List<string>>> parseManifest(string MANIFEST) {
     DateManager manager = new DateManager();
-    manifestFile = flat.parseFlatFile(MANIFEST, FlatFile_Manager.flatFileType.Manifest);
+    manifestFile = flat.parseFlatFile(MANIFEST, FlatFileManager.flatFileType.Manifest);
 
     for (int i = 0; i < manifestFile[0].Count; i++) {
         try {
             taskInstances.Add(new TaskInstance(manifestFile[0][i], int.Parse(manifestFile[1][i].Trim()), int.Parse(manifestFile[2][i].Trim()), manager.fromDatabaseString(manifestFile[3][i]), uint.Parse(manifestFile[4][i])));
         }
-        catch (Exception e) {
-            throw e; // notify user later on, throwing for alpha stage debugging
+        catch {
+            throw; // notify user later on, throwing for alpha stage debugging (database corruption/parsing issue)
         }
         }
     return Task.FromResult(manifestFile);
@@ -114,6 +114,7 @@ void printTasks() {
     for (int i = 0; i < taskInstances.Count; i++) {
         ui.writeLine($"{taskInstances[i].getName()} | Size: {taskInstances[i].getUiSize()} | " +
             $"Priority: {taskInstances[i].getUiPriority()} | Due Date: {taskInstances[i].getDueDate()}", 10);
+        Console.WriteLine();
     }
 }
 void mainUI() {
@@ -141,7 +142,8 @@ void mainUI() {
         ui.writeMainUI();
     }
     while (true) {
-        ui.getUserInput();
+        input = ui.getUserInput();
+        ui.printUI();
     }
 }
 flat.startGarbageCollector();

@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace reMind_me {
-    internal class Interface_Manager {
-        List<TaskInstance>* taskInstancesPtr;
+    internal class InterfaceManager {
+        List<TaskInstance> taskInstancesPtr;
 
         public enum userInput {
-            addTask,
-            ERROR
+            ERROR,
+            addTask
         }
 
         public userInput currentUserInput;
@@ -19,7 +19,8 @@ namespace reMind_me {
         // 
         Dictionary<String, userInput> userInputToEnum = new Dictionary<String, userInput>();
 
-        public Interface_Manager() {
+        public InterfaceManager(List<TaskInstance> mainTaskInstances) {
+            this.taskInstancesPtr = mainTaskInstances; // creates a pointer to mainTaskInstance
             userInputToEnum.Add("add", userInput.addTask);
         }
 
@@ -111,14 +112,12 @@ namespace reMind_me {
             writeAllLines(toWrite, 10);
         }
 
-        public userInput handleInput(String input) {
+        private void handleInput(String input) {
             userInput returnVal;
             if (!userInputToEnum.TryGetValue(input.ToLower().Trim(), out returnVal)) {
                 this.currentUserInput = userInput.ERROR;
-                return userInput.ERROR;
             }
             this.currentUserInput = returnVal;
-            return returnVal;
         }
 
         public String getUserInput() {
@@ -131,6 +130,7 @@ namespace reMind_me {
                 writeLine("ReMind\\> ", 5);
                 input = Console.ReadLine();
             }
+            handleInput(input);
             return input;
         }
 
@@ -138,7 +138,16 @@ namespace reMind_me {
             switch (currentUserInput) {
                 case userInput.addTask:
                     Console.Clear();
-                    AddNew
+                    String name = inputSanitizer("What is the name of this task", "? ");
+                    Console.Clear();
+                    writeLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
+                    String size = inputSanitizer("What is the size of this task", "? ");
+                    Console.Clear();
+                    writeLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
+                    String priority = inputSanitizer("What is the priority of this task", "? ");
+                    Console.Clear();
+                    writeLine("Thank you, we are now creating your task.", 2);
+                    // show task creation wizard
                     break;
             }
         }

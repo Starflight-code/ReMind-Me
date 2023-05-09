@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace reMind_me {
-    internal class FlatFile_Manager {
+    internal class FlatFileManager {
         public enum flatFileType { 
         Manifest,
         Database
@@ -13,7 +13,7 @@ namespace reMind_me {
 
         List<Task> taskList = new List<Task>();
         List<Task> garbageCollectors = new List<Task>();
-        public FlatFile_Manager() { }
+        public FlatFileManager() { }
         public void createNewFlatfile(string name, string[] toWrite) {
             taskList.Add(Task.Run(() => {
                 var x = File.Create(name);
