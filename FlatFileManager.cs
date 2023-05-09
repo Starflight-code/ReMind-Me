@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace reMind_me {
+﻿namespace reMind_me {
     internal class FlatFileManager {
-        public enum flatFileType { 
-        Manifest,
-        Database
+        public enum flatFileType {
+            Manifest,
+            Database
         }
 
         List<Task> taskList = new List<Task>();

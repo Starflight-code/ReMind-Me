@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-
-namespace reMind_me {
+﻿namespace reMind_me {
     internal class TaskInstance {
         private String name;
         public enum taskSize {
@@ -20,45 +13,45 @@ namespace reMind_me {
         private uint id;
 
         public TaskInstance(String taskName, int sizeOfTask, int priorityOfTask, DateTime dueDate, uint identifier) {
-            this.name = taskName;
+            name = taskName;
 
             switch (sizeOfTask) {
                 case 0:
-                    this.size = taskSize.Tiny;
+                    size = taskSize.Tiny;
                     break;
                 case 1:
-                    this.size = taskSize.Small;
+                    size = taskSize.Small;
                     break;
                 case 2:
-                    this.size = taskSize.Medium;
+                    size = taskSize.Medium;
                     break;
                 case 3:
-                    this.size = taskSize.Large;
+                    size = taskSize.Large;
                     break;
                 case 4:
-                    this.size = taskSize.Huge;
+                    size = taskSize.Huge;
                     break;
             }
 
             switch (priorityOfTask) {
                 case 0:
-                    this.priority = taskPriority.None;
+                    priority = taskPriority.None;
                     break;
                 case 1:
-                    this.priority = taskPriority.Low;
+                    priority = taskPriority.Low;
                     break;
                 case 2:
-                    this.priority = taskPriority.Medium;
+                    priority = taskPriority.Medium;
                     break;
                 case 3:
-                    this.priority = taskPriority.High;
+                    priority = taskPriority.High;
                     break;
                 case 4:
-                    this.priority = taskPriority.Urgent;
+                    priority = taskPriority.Urgent;
                     break;
             }
-            this.due = dueDate;
-            this.id = identifier;
+            due = dueDate;
+            id = identifier;
 
         }
 

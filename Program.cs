@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using reMind_me;
-using System.Runtime.CompilerServices;
 
 /* Data required upon task creation
  * Size of task (qualitative): likely will be an int for user input. This int will mean 1: Very Small 2: Small 3: Medium 4: Large 5: Huge
@@ -47,10 +46,10 @@ void setup() {
     ui.writeAllLines(welcomeText, 15, false);
 
     string? fullName = null;
-    fullName = ui.inputSanitizer("What is your name (First and Last)", "? ");
+    fullName = ui.hid.inputSanitizer("What is your name (First and Last)", "? ");
     while (fullName == null || fullName.Split(" ").Length != 2) {
         Console.WriteLine("\nOops, that may not be a valid (First and Last) name. Please try again...");
-        fullName = ui.inputSanitizer("What is your name (First and Last)", "? ", true);
+        fullName = ui.hid.inputSanitizer("What is your name (First and Last)", "? ", true);
     }
 
     ui.pleaseWait("creating reMind's database");
@@ -101,7 +100,7 @@ Task<List<List<string>>> parseManifest(string MANIFEST) {
         catch {
             throw; // notify user later on, throwing for alpha stage debugging (database corruption/parsing issue)
         }
-        }
+    }
     return Task.FromResult(manifestFile);
 }
 List<string> welcomeMessage = new List<string> {
@@ -142,7 +141,7 @@ void mainUI() {
         ui.writeMainUI();
     }
     while (true) {
-        input = ui.getUserInput();
+        input = ui.hid.getUserInput();
         ui.printUI();
     }
 }

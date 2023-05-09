@@ -1,27 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace reMind_me {
+﻿namespace reMind_me {
     internal class InterfaceManager {
         List<TaskInstance> taskInstancesPtr;
-
-        public enum userInput {
-            ERROR,
-            addTask
-        }
-
-        public userInput currentUserInput;
-        // dictionary converting commands to enums, allowing them to be processed more easily
-        // 
-        Dictionary<String, userInput> userInputToEnum = new Dictionary<String, userInput>();
+        public InputManager hid = new InputManager();
 
         public InterfaceManager(List<TaskInstance> mainTaskInstances) {
-            this.taskInstancesPtr = mainTaskInstances; // creates a pointer to mainTaskInstance
-            userInputToEnum.Add("add", userInput.addTask);
+            taskInstancesPtr = mainTaskInstances; // creates a pointer to mainTaskInstance
+        }
+        public InterfaceManager() {
+            taskInstancesPtr = new List<TaskInstance>();
         }
 
 
@@ -69,21 +55,6 @@ namespace reMind_me {
                 }
             }
         }
-        public string inputSanitizer(string prompt, string ending = ": ", bool skipSpacing = false)
-        /** @param prompt is the question, [prompt]: <User places input here>
-         * @param ending is what ends the question. prompt[: ] <input>
-         * @param spacing 0 to leave a newline before and after question
-         *                1 to skip the first, 2 to skip the last, 3 to skip both
-         */
-        {
-            Console.Write($"{(skipSpacing ? "" : "\n")}" + prompt + ending); // place newline in if spacing 
-            string? input = Console.ReadLine();
-            while (input == "" || input == null) {
-                Console.Write("\nOops, your input appears to have been invalid.\n" + prompt + ending);
-                input = Console.ReadLine();
-            }
-            return input;
-        }
         public void pleaseWait(string waitingFor) {
             string[] waitLines = {
             "Just a moment",
@@ -112,39 +83,17 @@ namespace reMind_me {
             writeAllLines(toWrite, 10);
         }
 
-        private void handleInput(String input) {
-            userInput returnVal;
-            if (!userInputToEnum.TryGetValue(input.ToLower().Trim(), out returnVal)) {
-                this.currentUserInput = userInput.ERROR;
-            }
-            this.currentUserInput = returnVal;
-        }
-
-        public String getUserInput() {
-            Console.WriteLine("\n");
-            writeLine("ReMind\\> ", 5);
-            String? input = Console.ReadLine();
-            while (input == null || input == "") {
-                Console.WriteLine("\n");
-                writeLine("Invalid Input Detected. Try again...", 5);
-                writeLine("ReMind\\> ", 5);
-                input = Console.ReadLine();
-            }
-            handleInput(input);
-            return input;
-        }
-
         public void printUI() {
-            switch (currentUserInput) {
-                case userInput.addTask:
+            switch (hid.currentUserInput) {
+                case InputManager.userInput.addTask:
                     Console.Clear();
-                    String name = inputSanitizer("What is the name of this task", "? ");
+                    String name = hid.inputSanitizer("What is the name of this task", "? ");
                     Console.Clear();
                     writeLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
-                    String size = inputSanitizer("What is the size of this task", "? ");
+                    String size = hid.inputSanitizer("What is the size of this task", "? ");
                     Console.Clear();
                     writeLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
-                    String priority = inputSanitizer("What is the priority of this task", "? ");
+                    String priority = hid.inputSanitizer("What is the priority of this task", "? ");
                     Console.Clear();
                     writeLine("Thank you, we are now creating your task.", 2);
                     // show task creation wizard
