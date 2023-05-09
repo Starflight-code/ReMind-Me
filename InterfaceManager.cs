@@ -1,12 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace reMind_me {
     internal class Interface_Manager {
-        public Interface_Manager() { }
+        List<TaskInstance>* taskInstancesPtr;
+
+        public enum userInput {
+            addTask,
+            ERROR
+        }
+
+        public userInput currentUserInput;
+        // dictionary converting commands to enums, allowing them to be processed more easily
+        // 
+        Dictionary<String, userInput> userInputToEnum = new Dictionary<String, userInput>();
+
+        public Interface_Manager() {
+            userInputToEnum.Add("add", userInput.addTask);
+        }
+
+
         public void writeAllLines(string[] x) {
             for (int i = 0; i < x.Length; i++) {
                 Console.WriteLine(x[i]);
@@ -14,7 +31,7 @@ namespace reMind_me {
         }
         public void writeAllLines(string[] x, int timeBetween, bool saveCPU = false) {
             for (int i = 0; i < x.Length; i++) {
-                if (saveCPU) {
+                if (saveCPU) { // prints one word at a time instead of characters
                     string[] words = x[i].Split(' ');
                     for (int j = 0; j < words.Length; j++) {
                         if (j != (words.Length - 1)) {
@@ -76,50 +93,54 @@ namespace reMind_me {
             Random rand = new Random();
             Console.WriteLine($"{waitLines[rand.Next(waitLines.Length)]}, {waitingFor}...");
         }
-        public void writeManifest(List<List<string>> manifest) {
+        //public void writeManifest(List<TaskInstance> tasks) {
 
+        //}
+
+        public void writeMainUI() {
+            Console.WriteLine('\n');
+            writeLine("NEW: Create a new task", 5);
         }
-        /** Size 1: Very Small 2: Small 3: Medium 4: Large 5: Huge
-         * Priority 1: None 2: Low 3: Medium 4: High 5: Urgent (Top Priority)
-         * 
-         */
-        public string numberToInterfaceString(char type, int number) { 
-            switch(type) {
-                case 's': // Size
-                    switch (number) {
-                        case 1:
-                            return "Very Small";
-                        case 2:
-                            return "Small     ";
-                        case 3:
-                            return "Medium    ";
-                        case 4:
-                            return "Large     ";
-                        case 5:
-                            return "Huge      ";
-                    }
-                    break;
+        public void editTaskUI(TaskInstance task) {
+            Console.Clear();
+            String[] toWrite = {task.getName(),
+                    "Size: " + task.getUiSize(),
+                    "Priority: " + task.getUiPriority(),
+                    "Due: " + task.getDueDate()
+            };
+            writeAllLines(toWrite, 10);
+        }
 
-
-                case 'p': // Priority
-                    switch (number) {
-                        case 1:
-                            return "None  ";
-                        case 2:
-                            return "Low   ";
-                        case 3:
-                            return "Medium";
-                        case 4:
-                            return "High  ";
-                        case 5:
-                            return "Urgent";
-                    }
-                    break;
-                default:
-                    return "Error";
-
+        public userInput handleInput(String input) {
+            userInput returnVal;
+            if (!userInputToEnum.TryGetValue(input.ToLower().Trim(), out returnVal)) {
+                this.currentUserInput = userInput.ERROR;
+                return userInput.ERROR;
             }
-            return "Error";
+            this.currentUserInput = returnVal;
+            return returnVal;
+        }
+
+        public String getUserInput() {
+            Console.WriteLine("\n");
+            writeLine("ReMind\\> ", 5);
+            String? input = Console.ReadLine();
+            while (input == null || input == "") {
+                Console.WriteLine("\n");
+                writeLine("Invalid Input Detected. Try again...", 5);
+                writeLine("ReMind\\> ", 5);
+                input = Console.ReadLine();
+            }
+            return input;
+        }
+
+        public void printUI() {
+            switch (currentUserInput) {
+                case userInput.addTask:
+                    Console.Clear();
+                    AddNew
+                    break;
+            }
         }
     }
 }

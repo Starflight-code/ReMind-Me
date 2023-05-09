@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,43 @@ namespace reMind_me {
         public bool isPast(DateTime toCompare) {
             return DateTime.Now.CompareTo(toCompare) > 0 && !DateOnly.Equals(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(toCompare));
         }
+
+        /**
+         * Datebase string should be formatted as YEAR-MONTH-DAY-HOUR-MINUTE-SECOND
+         */
+        public DateTime fromDatabaseString(string dateString) {
+            String[] brokenUpDate = dateString.Trim().Split('-');
+            if (brokenUpDate.Length != 6) {
+                return new DateTime();
+            }
+            List<int> dateComponents = new List<int>();
+            try {
+                for (int i = 0; i < brokenUpDate.Length; i++) {
+                    dateComponents.Add(Int32.Parse(brokenUpDate[i]));
+                }
+            }
+            catch {
+                return new DateTime();
+            }
+            return new DateTime(dateComponents[0], dateComponents[1], dateComponents[2], dateComponents[3], dateComponents[4], dateComponents[5]);
+        }
+
+        public String toDatabaseString(DateTime instance) {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(instance.Year);
+            sb.Append('-');
+            sb.Append(instance.Month);
+            sb.Append('-');
+            sb.Append(instance.Day);
+            sb.Append('-');
+            sb.Append(instance.Hour);
+            sb.Append('-');
+            sb.Append(instance.Minute);
+            sb.Append('-');
+            sb.Append(instance.Second);
+            return sb.ToString();
+        }
+
         public string timeOfDay() {
             string time;
             int timeNow = DateTime.Now.Hour;
