@@ -22,13 +22,14 @@ string MANIFEST = $"{DIRPATH}\\manifest.db";
 // Dynamic Variables
 List<List<string>> manifestFile = new List<List<string>>();
 List<TaskInstance> taskInstances = new List<TaskInstance>();
-String input = "NULL";
+String input;
 
 
 // Class Imports
 DateManager date = new DateManager();
 FlatFileManager flat = new FlatFileManager();
 InterfaceManager ui = new InterfaceManager(taskInstances);
+Constants statics = new Constants();
 
 
 void setup() {
@@ -37,20 +38,19 @@ void setup() {
      * Create a manifest within the folder, and grab it's path. Store within database.
      * Ask if they have DeStress, and where it is on their system (maybe just embed DeStress within it)
      */
-    string[] welcomeText = {
-    $"Good {date.timeOfDay().ToLower()},",
-    "We're going to briefly set up reMind me, a tool",
-    "designed for meeting deadlines while monitoring",
-    "for potential burnout."
-    };
-    ui.writeAllLines(welcomeText, 15, false);
+    ui.writeAllLines(statics.getWelcomeText(), 15, false);
 
-    string? fullName = null;
-    fullName = ui.hid.inputSanitizer("What is your name (First and Last)", "? ");
-    while (fullName == null || fullName.Split(" ").Length != 2) {
-        Console.WriteLine("\nOops, that may not be a valid (First and Last) name. Please try again...");
-        fullName = ui.hid.inputSanitizer("What is your name (First and Last)", "? ", true);
-    }
+
+    // function that will check over user input, used by askQuestion method of InputManager
+    Func<string, bool> checkForValidName = (string x) => {
+        if (x.Split(" ").Length == 2) { // makes sure the name contains two words
+            return true;
+        }
+        return false;
+    };
+
+    string fullName = ui.hid.askQuestion("What is your name (First and Last)", "? ", checkForValidName);
+
 
     ui.pleaseWait("creating reMind's database");
     string[] databaseContent = {
@@ -112,7 +112,7 @@ List<string> welcomeMessage = new List<string> {
 void printTasks() {
     for (int i = 0; i < taskInstances.Count; i++) {
         ui.writeLine($"{taskInstances[i].getName()} | Size: {taskInstances[i].getUiSize()} | " +
-            $"Priority: {taskInstances[i].getUiPriority()} | Due Date: {taskInstances[i].getDueDate()}", 10);
+            $"Priority: {taskInstances[i].getUiPriority()} | Due Date: {taskInstances[i].getDueDate()}", 5);
         Console.WriteLine();
     }
 }
@@ -130,7 +130,7 @@ void mainUI() {
     Thread.Sleep(500);
     Console.Clear();
 
-    ui.writeAllLines(welcomeMessage.ToArray(), 15);
+    ui.writeAllLines(welcomeMessage.ToArray(), 5);
     manifestFile = manifest.GetAwaiter().GetResult();
 
     if (manifestFile[0].Count == 0) {
@@ -143,6 +143,9 @@ void mainUI() {
     while (true) {
         input = ui.hid.getUserInput();
         ui.printUI();
+        Console.WriteLine("\n"); // adds 2 newlines
+        printTasks();
+        ui.writeMainUI();
     }
 }
 flat.startGarbageCollector();

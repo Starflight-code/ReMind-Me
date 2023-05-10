@@ -60,6 +60,7 @@
         public taskSize getSize() { return size; }
         public String getUiPriority() { return priority.ToString(); }
         public String getUiSize() { return size.ToString(); }
+        public uint getID() { return id; }
         /** Returns the due date in the correct format for the culture detected by .NET
          */
         public String getDueDate() {
