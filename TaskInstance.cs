@@ -66,6 +66,16 @@
         public String getDueDate() {
             return due.ToString();
         }
+        public String[] getDatabaseEntry() {
+            DateManager date = new DateManager();
+            return new string[] {
+                name,
+                ((int)size).ToString(),
+                ((int)priority).ToString(),
+                date.toDatabaseString(due),
+                id.ToString()
+            };
+        }
 
     }
 }

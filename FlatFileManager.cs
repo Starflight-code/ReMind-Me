@@ -34,6 +34,17 @@
                 }
             }));
         }
+        private string[] generateManifestToWrite(List<TaskInstance> tasks) {
+            List<string> databaseToWrite = new List<string>();
+            for (int i = 0; i < tasks.Count; i++) {
+                databaseToWrite.AddRange(tasks[i].getDatabaseEntry());
+            }
+            return databaseToWrite.ToArray();
+        }
+        public void writeManifest(List<TaskInstance> tasks, string manifestPath) {
+            string[] manifestToWrite = generateManifestToWrite(tasks);
+            writeFlatFile(manifestPath, manifestToWrite, 'w');
+        }
         public List<List<string>> parseFlatFile(string name, flatFileType parseType) {
             string[] content = readFlatFile(name);
             List<List<string>> parsedData = new List<List<string>>() {

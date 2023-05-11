@@ -3,36 +3,36 @@
         List<TaskInstance> taskInstancesPtr;
         public InputManager hid = new InputManager();
         private DateManager date = new DateManager();
-        private Dictionary<string, int> priority = new Dictionary<string, int>();
-        private Dictionary<string, int> size = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> priorityConverter = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> sizeConverter = new Dictionary<string, int>();
         private uint lastIdentifier;
 
         public InterfaceManager(List<TaskInstance> mainTaskInstances) {
             taskInstancesPtr = mainTaskInstances; // creates a pointer to mainTaskInstance
 
             // populates priority dictionary
-            priority.Add("0", 0);
-            priority.Add("1", 1);
-            priority.Add("2", 2);
-            priority.Add("3", 3);
-            priority.Add("4", 4);
-            priority.Add("none", 0);
-            priority.Add("low", 1);
-            priority.Add("medium", 2);
-            priority.Add("high", 3);
-            priority.Add("urgent", 4);
+            priorityConverter.Add("0", 0);
+            priorityConverter.Add("1", 1);
+            priorityConverter.Add("2", 2);
+            priorityConverter.Add("3", 3);
+            priorityConverter.Add("4", 4);
+            priorityConverter.Add("none", 0);
+            priorityConverter.Add("low", 1);
+            priorityConverter.Add("medium", 2);
+            priorityConverter.Add("high", 3);
+            priorityConverter.Add("urgent", 4);
 
             // populates size dictionary
-            size.Add("0", 0);
-            size.Add("1", 1);
-            size.Add("2", 2);
-            size.Add("3", 3);
-            size.Add("4", 4);
-            size.Add("tiny", 0);
-            size.Add("small", 1);
-            size.Add("medium", 2);
-            size.Add("large", 3);
-            size.Add("huge", 4);
+            sizeConverter.Add("0", 0);
+            sizeConverter.Add("1", 1);
+            sizeConverter.Add("2", 2);
+            sizeConverter.Add("3", 3);
+            sizeConverter.Add("4", 4);
+            sizeConverter.Add("tiny", 0);
+            sizeConverter.Add("small", 1);
+            sizeConverter.Add("medium", 2);
+            sizeConverter.Add("large", 3);
+            sizeConverter.Add("huge", 4);
         }
 
         private void createTask(string taskName, string taskSize, string taskPriority, string taskDueDate) {
@@ -40,9 +40,9 @@
             Random rand = new Random();
             int sizeOfTask = -1;
             int priorityOfTask = -1;
-            size.TryGetValue(taskSize, out sizeOfTask);
-            priority.TryGetValue(taskPriority, out priorityOfTask);
-            taskInstancesPtr.Add(new TaskInstance(taskName, sizeOfTask, priorityOfTask, date.fromDatabaseString(taskDueDate)), lastIdentifier + 1);
+            sizeConverter.TryGetValue(taskSize, out sizeOfTask);
+            priorityConverter.TryGetValue(taskPriority, out priorityOfTask);
+            taskInstancesPtr.Add(new TaskInstance(taskName, sizeOfTask, priorityOfTask, date.fromDatabaseString(taskDueDate), lastIdentifier + 1));
         }
         public void writeAllLines(string[] x) {
             for (int i = 0; i < x.Length; i++) {
@@ -98,9 +98,6 @@
             Random rand = new Random();
             Console.WriteLine($"{waitLines[rand.Next(waitLines.Length)]}, {waitingFor}...");
         }
-        //public void writeManifest(List<TaskInstance> tasks) {
-
-        //}
 
         public void writeMainUI() {
             Console.WriteLine('\n');
@@ -120,7 +117,7 @@
             switch (hid.currentUserInput) {
                 case InputManager.userInput.addTask:
                     Console.Clear();
-                    String name = hid.inputSanitizer("What is the name of this task", "?", true);
+                    string name = hid.inputSanitizer("What is the name of this task", "?", true);
                     Console.Clear();
 
                     Func<string, bool> checkTaskSize = (string x) => {
@@ -128,7 +125,7 @@
                         return acceptedInputs.Contains(x.ToLower());
                     };
                     writeLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
-                    String size = hid.askQuestion("What is the size of this task", "?", checkTaskSize);
+                    string size = hid.askQuestion("What is the size of this task", "?", checkTaskSize);
                     Console.Clear();
 
                     Func<string, bool> checkTaskPriority = (string x) => {
@@ -136,8 +133,22 @@
                         return acceptedInputs.Contains(x.ToLower());
                     };
                     writeLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
-                    String priority = hid.askQuestion("What is the priority of this task", "?", checkTaskPriority);
+                    string priority = hid.askQuestion("What is the priority of this task", "?", checkTaskPriority);
                     Console.Clear();
+
+                    Func<string, bool> checkDueDate = (string x) => {
+                        return DateTime.TryParse(x, out _);
+                    };
+                    string dueDate = hid.askQuestion("What is the due date for this task", "?", checkDueDate);
+                    DateTime dueDateObject = DateTime.Parse(dueDate);
+                    Console.Clear();
+
+                    int sizeValue;
+                    int priorityValue;
+                    sizeConverter.TryGetValue(size, out sizeValue);
+                    priorityConverter.TryGetValue(priority, out priorityValue);
+                    taskInstancesPtr.Add(new TaskInstance(name, sizeValue, priorityValue, dueDateObject, lastIdentifier + 1));
+
                     writeLine("Thank you, your task has been added!", 2);
                     // show task creation wizard
                     break;

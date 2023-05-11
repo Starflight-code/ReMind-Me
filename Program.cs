@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using reMind_me;
+﻿using reMind_me;
 
 /* Data required upon task creation
  * Size of task (qualitative): likely will be an int for user input. This int will mean 1: Very Small 2: Small 3: Medium 4: Large 5: Huge
@@ -146,6 +145,7 @@ void mainUI() {
         Console.WriteLine("\n"); // adds 2 newlines
         printTasks();
         ui.writeMainUI();
+        flat.writeManifest(taskInstances, MANIFEST);
     }
 }
 flat.startGarbageCollector();
