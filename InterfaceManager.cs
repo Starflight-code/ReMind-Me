@@ -114,10 +114,13 @@
         }
 
         public void printUI() {
+            string name;
+
             switch (hid.currentUserInput) {
+
                 case InputManager.userInput.addTask:
                     Console.Clear();
-                    string name = hid.inputSanitizer("What is the name of this task", "?", true);
+                    name = hid.inputSanitizer("What is the name of this task", "?", true);
                     Console.Clear();
 
                     Func<string, bool> checkTaskSize = (string x) => {
@@ -150,9 +153,36 @@
                     taskInstancesPtr.Add(new TaskInstance(name, sizeValue, priorityValue, dueDateObject, lastIdentifier + 1));
 
                     writeLine("Thank you, your task has been added!", 2);
-                    // show task creation wizard
                     break;
+
+                case InputManager.userInput.removeTask:
+                    Console.Clear();
+                    name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
+                    bool foundName = false;
+                    for (int i = 0; i < taskInstancesPtr.Count(); i++) {
+                        if (taskInstancesPtr[i].getName().ToLower() == name.ToLower()) {
+                            foundName = true;
+                            taskInstancesPtr.RemoveAt(i);
+                            break;
+                        }
+                    }
+                    Console.Clear();
+                    if (foundName) {
+                        writeLine($"Task '{name}' removed successfully!", 5);
+                    } else {
+                        writeLine($"Task '{name}' not found. Removal failed!", 5);
+                    }
+                    break;
+
+                case InputManager.userInput.exitProgram:
+                    System.Environment.Exit(0);
+                    break;
+
+                case InputManager.userInput.editTask:
+                    break;
+
                 default:
+                    Console.Clear();
                     Console.WriteLine("Input error, your input was not valid!");
                     break;
             }

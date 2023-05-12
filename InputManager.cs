@@ -2,7 +2,10 @@
     internal class InputManager {
         public enum userInput {
             ERROR,
-            addTask
+            addTask,
+            removeTask,
+            exitProgram,
+            editTask
         }
         public userInput currentUserInput;
         // dictionary converting commands to enums, allowing them to be processed more easily
@@ -10,6 +13,12 @@
 
         public InputManager() {
             userInputToEnum.Add("add", userInput.addTask);
+            userInputToEnum.Add("a", userInput.addTask);
+            userInputToEnum.Add("remove", userInput.removeTask);
+            userInputToEnum.Add("r", userInput.removeTask);
+            userInputToEnum.Add("exit", userInput.exitProgram);
+            userInputToEnum.Add("e", userInput.editTask);
+            userInputToEnum.Add("edit", userInput.editTask);
         }
 
         public void writeLine(string x, int timeBetween, bool saveCPU = false) {
