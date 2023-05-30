@@ -1,14 +1,19 @@
 ﻿namespace reMind_me {
     internal class InterfaceManager {
         List<TaskInstance> taskInstancesPtr;
-        public InputManager hid = new InputManager();
+        public InputManager hid;
+        public Settings settings;
         private DateManager date = new DateManager();
         private readonly Dictionary<string, int> priorityConverter = new Dictionary<string, int>();
         private readonly Dictionary<string, int> sizeConverter = new Dictionary<string, int>();
         private uint lastIdentifier;
 
-        public InterfaceManager(List<TaskInstance> mainTaskInstances) {
+        public InterfaceManager(List<TaskInstance> mainTaskInstances, Settings settings) {
             taskInstancesPtr = mainTaskInstances; // creates a pointer to mainTaskInstance
+
+            // sets up input manager and interface manager with current settings
+            hid = new InputManager(settings);
+            this.settings = settings;
 
             // populates priority dictionary
             priorityConverter.Add("0", 0);
@@ -33,6 +38,12 @@
             sizeConverter.Add("medium", 2);
             sizeConverter.Add("large", 3);
             sizeConverter.Add("huge", 4);
+        }
+
+        /// updates our and input manager's settings
+        public void updateSettings(Settings settings) {
+            this.settings = settings;
+            hid.updateSettings(settings);
         }
 
         private void createTask(string taskName, string taskSize, string taskPriority, string taskDueDate) {
@@ -115,6 +126,7 @@
 
         public void printUI() {
             string name;
+            bool foundName;
 
             switch (hid.currentUserInput) {
 
@@ -158,7 +170,7 @@
                 case InputManager.userInput.removeTask:
                     Console.Clear();
                     name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
-                    bool foundName = false;
+                    foundName = false;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
                         if (taskInstancesPtr[i].getName().ToLower() == name.ToLower()) {
                             foundName = true;
@@ -179,6 +191,17 @@
                     break;
 
                 case InputManager.userInput.editTask:
+                    Console.Clear();
+                    name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
+                    foundName = false;
+                    for (int i = 0; i < taskInstancesPtr.Count(); i++) {
+                        if (taskInstancesPtr[i].getName().ToLower() == name.ToLower()) {
+                            foundName = true;
+                            taskInstancesPtr.RemoveAt(i);
+                            break;
+                        }
+                    }
+
                     break;
 
                 default:

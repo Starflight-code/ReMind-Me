@@ -27,7 +27,7 @@ String input;
 // Class Imports
 DateManager date = new DateManager();
 FlatFileManager flat = new FlatFileManager();
-InterfaceManager ui = new InterfaceManager(taskInstances);
+InterfaceManager ui = new InterfaceManager(taskInstances, new Settings(false));
 Constants statics = new Constants();
 
 

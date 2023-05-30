@@ -7,11 +7,13 @@
             exitProgram,
             editTask
         }
+        public Settings settings;
         public userInput currentUserInput;
         // dictionary converting commands to enums, allowing them to be processed more easily
         Dictionary<string, userInput> userInputToEnum = new Dictionary<string, userInput>();
 
-        public InputManager() {
+        public InputManager(Settings settings) {
+            this.settings = settings;
             userInputToEnum.Add("add", userInput.addTask);
             userInputToEnum.Add("a", userInput.addTask);
             userInputToEnum.Add("remove", userInput.removeTask);
@@ -21,7 +23,16 @@
             userInputToEnum.Add("edit", userInput.editTask);
         }
 
+        /// Updates current settings to a new instance of the settings class
+        public void updateSettings(Settings settings) {
+            this.settings = settings;
+        }
+
         public void writeLine(string x, int timeBetween, bool saveCPU = false) {
+            if (settings.fastMode) { // disables animation for fast mode
+                Console.Write(x);
+                return;
+            }
             if (saveCPU) {
                 string[] words = x.Split(' ');
                 for (int i = 0; i < words.Length; i++) {

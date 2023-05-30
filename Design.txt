@@ -1,0 +1,10 @@
+﻿This document contains the initial design, and ideas for the future design additions to ReMind me.
+
+Manifest File
+This file contains all the data required to retrieve the current list of tasks. It is saved every time an execution loop completes, this may be changed in the future. Eventually, this will contain links to 
+task subfiles. These subfiles will contain extended information on specific tasks. This will allow associating files, paragraphs of text, or otherwise large amounts of data to a specific task and managing this
+data with ReMind Me.
+
+Database File
+This file currently contains the first and last name, given upon initialization, and the directory containing the manifest file. The manifest file can be stored anywhere on the system, but the database file must be
+in the same directory as the program executable. In the future, this could contain data on the user's current stress level, basic psychological profile, and other data required to run the stress intervention algorithms.
