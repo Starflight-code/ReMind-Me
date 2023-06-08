@@ -4,20 +4,20 @@ namespace reMind_me {
     internal class DateManager {
         public DateManager() {
         }
-        public static DateTime GetCurrentDateTime() {
+        public DateTime GetCurrentDateTime() {
             return DateTime.Now;
         }
-        public static int GetDaysBetween(DateTime toCompare, DateTime toCompareTo) {
+        public int GetDaysBetween(DateTime toCompare, DateTime toCompareTo) {
             return toCompare.Subtract(toCompareTo).Days;
         }
-        public static bool IsPast(DateTime toCompare) {
+        public bool IsPast(DateTime toCompare) {
             return DateTime.Now.CompareTo(toCompare) > 0 && !DateOnly.Equals(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(toCompare));
         }
 
         /**
          * Datebase string should be formatted as YEAR-MONTH-DAY-HOUR-MINUTE-SECOND
          */
-        public static DateTime FromDatabaseString(string dateString) {
+        public DateTime FromDatabaseString(string dateString) {
             string[] brokenUpDate = dateString.Trim().Split('-');
             if (brokenUpDate.Length != 6) {
                 return new DateTime();

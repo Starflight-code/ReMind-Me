@@ -81,6 +81,20 @@
                 Console.WriteLine();
             }
         }
+        public string GenerateTaskString(int index) {
+            return new string($"{taskInstancesPtr[index].GetName()} | Size: {taskInstancesPtr[index].GetUiSize()} | " +
+                    $"Priority: {taskInstancesPtr[index].GetUiPriority()} | Due Date: {taskInstancesPtr[index].GetDueDate()}");
+        }
+
+        public void PrintTasks() {
+            for (int i = 0; i < taskInstancesPtr.Count; i++) {
+
+                // taskName | Size: Small | Priority: Low | Due Date: 1/1/2020
+                WriteLine($"{taskInstancesPtr[i].GetName()} | Size: {taskInstancesPtr[i].GetUiSize()} | " +
+                    $"Priority: {taskInstancesPtr[i].GetUiPriority()} | Due Date: {taskInstancesPtr[i].GetDueDate()}", 5);
+                Console.WriteLine();
+            }
+        }
         public void WriteLine(string x, int timeBetween, bool saveCPU = false) {
             if (saveCPU) {
                 string[] words = x.Split(' ');
@@ -169,6 +183,7 @@
 
                 case InputManager.UserInput.removeTask:
                     Console.Clear();
+                    PrintTasks();
                     name = hid.InputSanitizer("What is the name of this task you'd like to remove", "?", true);
                     foundName = false;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
@@ -192,15 +207,31 @@
 
                 case InputManager.UserInput.editTask:
                     Console.Clear();
-                    name = hid.InputSanitizer("What is the name of this task you'd like to remove", "?", true);
+                    PrintTasks();
+                    Console.WriteLine();
+
+                    name = hid.InputSanitizer("What is the name of this task you'd like to edit", "?", true);
                     foundName = false;
+                    int index = 0;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
                         if (taskInstancesPtr[i].GetName().ToLower() == name.ToLower()) {
                             foundName = true;
-                            taskInstancesPtr.RemoveAt(i);
+                            index = i;
                             break;
                         }
                     }
+
+                    if (foundName == false) {
+                        return;
+                    }
+
+                    // show "Task selected (taskName | Size: Medium | Priority: Urgent | Due Date: 1/1/2000 1:00:00 AM)" in console, with specific task info substituted
+                    Console.WriteLine();
+                    WriteLine("Task selected (", 10);
+                    WriteLine(GenerateTaskString(index) + ")", 10);
+                    Console.WriteLine();
+
+
 
                     break;
 
@@ -209,16 +240,20 @@
                     List<List<string>> listOfCommands = hid.FetchCommandList();
                     hid.WriteLine("Command List", 5);
                     Console.WriteLine("\n");
+
                     for (int i = 0; i < listOfCommands.Count(); i++) {
                         hid.WriteLine($"Command: {listOfCommands[i][0]}", 5);
                         for (int j = 0; j < (hid.GetMaxCommandLength() - listOfCommands[i][0].Length); j++) {
                             Console.Write(" ");
                         }
+
                         Console.Write(" | ");
                         hid.WriteLine("Aliases: ", 5);
+
                         for (int j = 1; j < listOfCommands[i].Count(); j++) {
                             hid.WriteLine("\"" + listOfCommands[i][j] + "\" ", 5);
                         }
+
                         Console.WriteLine();
                     }
 

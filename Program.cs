@@ -107,16 +107,6 @@ List<string> welcomeMessage = new List<string> {
     $"Let's take a look what tasks you have for today...",
     ""
 };
-
-void printTasks() {
-    for (int i = 0; i < taskInstances.Count; i++) {
-
-        // taskName | Size: Small | Priority: Low | Due Date: 1/1/2020
-        ui.WriteLine($"{taskInstances[i].GetName()} | Size: {taskInstances[i].GetUiSize()} | " +
-            $"Priority: {taskInstances[i].GetUiPriority()} | Due Date: {taskInstances[i].GetDueDate()}", 5);
-        Console.WriteLine();
-    }
-}
 void mainUI() {
 
     // sets up database if it doesn't exist
@@ -138,14 +128,14 @@ void mainUI() {
         ui.WriteLine("We don't seem to have any tasks. You have some time to relax!", 10);
         ui.WriteMainUI();
     } else {
-        printTasks();
+        ui.PrintTasks();
         ui.WriteMainUI();
     }
     while (true) {
         input = ui.hid.GetUserInput();
         ui.PrintUI();
         Console.WriteLine("\n"); // adds 2 newlines
-        printTasks();
+        ui.PrintTasks();
         ui.WriteMainUI();
         flat.WriteManifest(taskInstances, MANIFEST);
     }

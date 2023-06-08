@@ -32,7 +32,7 @@
 
         public void AddTask(TaskInstance task) {
             for (int i = 0; i < taskInstanceListPtr.Count; i++) {
-                if (taskInstanceListPtr[i].getID == task.getID) {
+                if (taskInstanceListPtr[i].GetID == task.GetID) {
                     return;
                 }
             }
