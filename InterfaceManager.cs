@@ -130,7 +130,7 @@
 
             switch (hid.currentUserInput) {
 
-                case InputManager.userInput.addTask:
+                case InputManager.UserInput.addTask:
                     Console.Clear();
                     name = hid.inputSanitizer("What is the name of this task", "?", true);
                     Console.Clear();
@@ -167,7 +167,7 @@
                     writeLine("Thank you, your task has been added!", 2);
                     break;
 
-                case InputManager.userInput.removeTask:
+                case InputManager.UserInput.removeTask:
                     Console.Clear();
                     name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
                     foundName = false;
@@ -186,11 +186,11 @@
                     }
                     break;
 
-                case InputManager.userInput.exitProgram:
+                case InputManager.UserInput.exitProgram:
                     System.Environment.Exit(0);
                     break;
 
-                case InputManager.userInput.editTask:
+                case InputManager.UserInput.editTask:
                     Console.Clear();
                     name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
                     foundName = false;
@@ -203,6 +203,27 @@
                     }
 
                     break;
+
+                case InputManager.UserInput.listCommands:
+                    Console.Clear();
+                    List<List<string>> listOfCommands = hid.fetchListOfAliasesAndCommands();
+                    hid.writeLine("Command List", 5);
+                    Console.WriteLine("\n");
+                    for (int i = 0; i < listOfCommands.Count(); i++) {
+                        hid.writeLine($"Command: {listOfCommands[i][0]}", 5);
+                        for (int j = 0; j < (hid.getMaxCommandLength() - listOfCommands[i][0].Length); j++) {
+                            Console.Write(" ");
+                        }
+                        Console.Write(" | ");
+                        hid.writeLine("Aliases: ", 5);
+                        for (int j = 1; j < listOfCommands[i].Count(); j++) {
+                            hid.writeLine("\"" + listOfCommands[i][j] + "\" ", 5);
+                        }
+                        Console.WriteLine();
+                    }
+
+                    break;
+
 
                 default:
                     Console.Clear();

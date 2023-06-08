@@ -110,6 +110,8 @@ List<string> welcomeMessage = new List<string> {
 
 void printTasks() {
     for (int i = 0; i < taskInstances.Count; i++) {
+
+        // taskName | Size: Small | Priority: Low | Due Date: 1/1/2020
         ui.writeLine($"{taskInstances[i].getName()} | Size: {taskInstances[i].getUiSize()} | " +
             $"Priority: {taskInstances[i].getUiPriority()} | Due Date: {taskInstances[i].getDueDate()}", 5);
         Console.WriteLine();

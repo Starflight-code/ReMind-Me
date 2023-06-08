@@ -1,26 +1,66 @@
 ﻿namespace reMind_me {
     internal class InputManager {
-        public enum userInput {
+        public enum UserInput {
             ERROR,
             addTask,
             removeTask,
             exitProgram,
-            editTask
+            editTask,
+            listCommands
         }
         public Settings settings;
-        public userInput currentUserInput;
+        public UserInput currentUserInput;
         // dictionary converting commands to enums, allowing them to be processed more easily
-        Dictionary<string, userInput> userInputToEnum = new Dictionary<string, userInput>();
+        Dictionary<string, UserInput> userInputToEnum = new Dictionary<string, UserInput>();
+
+        // Sublist = {Master Command, Alias1, Alias2}
+        List<List<string>> masterCommandsAndAliases = new List<List<string>>();
+
+        int maxCommandLength = 0;
+
+        public void addCommand(string command, UserInput mappedTo) {
+            masterCommandsAndAliases.Add(new List<string> { command.Trim().ToLower() });
+            userInputToEnum.Add(command.Trim().ToLower(), mappedTo);
+            if (maxCommandLength < command.Trim().Length) {
+                maxCommandLength = command.Trim().Length;
+            }
+        }
+
+        public int getMaxCommandLength() {
+            return maxCommandLength;
+        }
+        public void addAlias(string alias, string toCommand, UserInput mappedTo) {
+            UserInput mappedToFetched;
+            bool result = userInputToEnum.TryGetValue(toCommand.Trim().ToLower(), out mappedToFetched);
+            if (mappedToFetched == mappedTo) {
+                for (int i = 0; i < masterCommandsAndAliases.Count(); i++) { // finds the sublist for the master command and appends the alias to it
+                    if (masterCommandsAndAliases[i][0] == toCommand.Trim().ToLower()) {
+                        masterCommandsAndAliases[i].Add(alias);
+                        break;
+                    }
+                }
+                userInputToEnum.Add(alias.Trim().ToLower(), mappedTo);
+            } else {
+                // ERROR, if this was executed it means the alias was registered with invalid data
+                throw new Exception($"A command was registered incorrectly! Debug: Alias was {alias}, Command was {toCommand}, enum value was {mappedTo}, result of fetch was {result}");
+            }
+        }
+
+        public List<List<string>> fetchListOfAliasesAndCommands() {
+            return masterCommandsAndAliases;
+        }
 
         public InputManager(Settings settings) {
             this.settings = settings;
-            userInputToEnum.Add("add", userInput.addTask);
-            userInputToEnum.Add("a", userInput.addTask);
-            userInputToEnum.Add("remove", userInput.removeTask);
-            userInputToEnum.Add("r", userInput.removeTask);
-            userInputToEnum.Add("exit", userInput.exitProgram);
-            userInputToEnum.Add("e", userInput.editTask);
-            userInputToEnum.Add("edit", userInput.editTask);
+            addCommand("add", UserInput.addTask);
+            addAlias("a", "add", UserInput.addTask);
+            addCommand("remove", UserInput.removeTask);
+            addAlias("r", "remove", UserInput.removeTask);
+            addCommand("exit", UserInput.exitProgram);
+            addAlias("e", "exit", UserInput.exitProgram);
+            addCommand("edit", UserInput.editTask);
+            addCommand("help", UserInput.listCommands);
+            addAlias("h", "help", UserInput.listCommands);
         }
 
         /// Updates current settings to a new instance of the settings class
@@ -51,10 +91,10 @@
             }
         }
         private void handleInput(string input) {
-            userInput returnVal;
+            UserInput returnVal;
             bool check = userInputToEnum.TryGetValue(input.ToLower(), out returnVal);
             if (!check) {
-                currentUserInput = userInput.ERROR;
+                currentUserInput = UserInput.ERROR;
             }
             currentUserInput = returnVal;
         }
