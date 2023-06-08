@@ -41,26 +41,26 @@
         }
 
         /// updates our and input manager's settings
-        public void updateSettings(Settings settings) {
+        public void UpdateSettings(Settings settings) {
             this.settings = settings;
-            hid.updateSettings(settings);
+            hid.UpdateSettings(settings);
         }
 
-        private void createTask(string taskName, string taskSize, string taskPriority, string taskDueDate) {
-            lastIdentifier = taskInstancesPtr[taskInstancesPtr.Count - 1].getID();
+        private void CreateTask(string taskName, string taskSize, string taskPriority, string taskDueDate) {
+            lastIdentifier = taskInstancesPtr[taskInstancesPtr.Count - 1].GetID();
             Random rand = new Random();
             int sizeOfTask = -1;
             int priorityOfTask = -1;
             sizeConverter.TryGetValue(taskSize, out sizeOfTask);
             priorityConverter.TryGetValue(taskPriority, out priorityOfTask);
-            taskInstancesPtr.Add(new TaskInstance(taskName, sizeOfTask, priorityOfTask, date.fromDatabaseString(taskDueDate), lastIdentifier + 1));
+            taskInstancesPtr.Add(new TaskInstance(taskName, sizeOfTask, priorityOfTask, date.FromDatabaseString(taskDueDate), lastIdentifier + 1));
         }
         public void writeAllLines(string[] x) {
             for (int i = 0; i < x.Length; i++) {
                 Console.WriteLine(x[i]);
             }
         }
-        public void writeAllLines(string[] x, int timeBetween, bool saveCPU = false) {
+        public void WriteAllLines(string[] x, int timeBetween, bool saveCPU = false) {
             for (int i = 0; i < x.Length; i++) {
                 if (saveCPU) { // prints one word at a time instead of characters
                     string[] words = x[i].Split(' ');
@@ -81,7 +81,7 @@
                 Console.WriteLine();
             }
         }
-        public void writeLine(string x, int timeBetween, bool saveCPU = false) {
+        public void WriteLine(string x, int timeBetween, bool saveCPU = false) {
             if (saveCPU) {
                 string[] words = x.Split(' ');
                 for (int i = 0; i < words.Length; i++) {
@@ -99,7 +99,7 @@
                 }
             }
         }
-        public void pleaseWait(string waitingFor) {
+        public void PleaseWait(string waitingFor) {
             string[] waitLines = {
             "Just a moment",
             "Please wait",
@@ -110,21 +110,21 @@
             Console.WriteLine($"{waitLines[rand.Next(waitLines.Length)]}, {waitingFor}...");
         }
 
-        public void writeMainUI() {
+        public void WriteMainUI() {
             Console.WriteLine('\n');
-            writeLine("ADD: Create a new task", 5);
+            WriteLine("ADD: Create a new task", 5);
         }
-        public void editTaskUI(TaskInstance task) {
+        public void EditTaskUI(TaskInstance task) {
             Console.Clear();
-            String[] toWrite = {task.getName(),
-                    "Size: " + task.getUiSize(),
-                    "Priority: " + task.getUiPriority(),
-                    "Due: " + task.getDueDate()
+            String[] toWrite = {task.GetName(),
+                    "Size: " + task.GetUiSize(),
+                    "Priority: " + task.GetUiPriority(),
+                    "Due: " + task.GetDueDate()
             };
-            writeAllLines(toWrite, 10);
+            WriteAllLines(toWrite, 10);
         }
 
-        public void printUI() {
+        public void PrintUI() {
             string name;
             bool foundName;
 
@@ -132,29 +132,29 @@
 
                 case InputManager.UserInput.addTask:
                     Console.Clear();
-                    name = hid.inputSanitizer("What is the name of this task", "?", true);
+                    name = hid.InputSanitizer("What is the name of this task", "?", true);
                     Console.Clear();
 
                     Func<string, bool> checkTaskSize = (string x) => {
                         string[] acceptedInputs = new string[] { "0", "1", "2", "3", "4", "tiny", "small", "medium", "large", "huge" };
                         return acceptedInputs.Contains(x.ToLower());
                     };
-                    writeLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
-                    string size = hid.askQuestion("What is the size of this task", "?", checkTaskSize);
+                    WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
+                    string size = hid.AskQuestion("What is the size of this task", "?", checkTaskSize);
                     Console.Clear();
 
                     Func<string, bool> checkTaskPriority = (string x) => {
                         string[] acceptedInputs = new string[] { "0", "1", "2", "3", "4", "none", "low", "medium", "high", "urgent" };
                         return acceptedInputs.Contains(x.ToLower());
                     };
-                    writeLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
-                    string priority = hid.askQuestion("What is the priority of this task", "?", checkTaskPriority);
+                    WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
+                    string priority = hid.AskQuestion("What is the priority of this task", "?", checkTaskPriority);
                     Console.Clear();
 
                     Func<string, bool> checkDueDate = (string x) => {
                         return DateTime.TryParse(x, out _);
                     };
-                    string dueDate = hid.askQuestion("What is the due date for this task", "?", checkDueDate);
+                    string dueDate = hid.AskQuestion("What is the due date for this task", "?", checkDueDate);
                     DateTime dueDateObject = DateTime.Parse(dueDate);
                     Console.Clear();
 
@@ -164,15 +164,15 @@
                     priorityConverter.TryGetValue(priority, out priorityValue);
                     taskInstancesPtr.Add(new TaskInstance(name, sizeValue, priorityValue, dueDateObject, lastIdentifier + 1));
 
-                    writeLine("Thank you, your task has been added!", 2);
+                    WriteLine("Thank you, your task has been added!", 2);
                     break;
 
                 case InputManager.UserInput.removeTask:
                     Console.Clear();
-                    name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
+                    name = hid.InputSanitizer("What is the name of this task you'd like to remove", "?", true);
                     foundName = false;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
-                        if (taskInstancesPtr[i].getName().ToLower() == name.ToLower()) {
+                        if (taskInstancesPtr[i].GetName().ToLower() == name.ToLower()) {
                             foundName = true;
                             taskInstancesPtr.RemoveAt(i);
                             break;
@@ -180,9 +180,9 @@
                     }
                     Console.Clear();
                     if (foundName) {
-                        writeLine($"Task '{name}' removed successfully!", 5);
+                        WriteLine($"Task '{name}' removed successfully!", 5);
                     } else {
-                        writeLine($"Task '{name}' not found. Removal failed!", 5);
+                        WriteLine($"Task '{name}' not found. Removal failed!", 5);
                     }
                     break;
 
@@ -192,10 +192,10 @@
 
                 case InputManager.UserInput.editTask:
                     Console.Clear();
-                    name = hid.inputSanitizer("What is the name of this task you'd like to remove", "?", true);
+                    name = hid.InputSanitizer("What is the name of this task you'd like to remove", "?", true);
                     foundName = false;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
-                        if (taskInstancesPtr[i].getName().ToLower() == name.ToLower()) {
+                        if (taskInstancesPtr[i].GetName().ToLower() == name.ToLower()) {
                             foundName = true;
                             taskInstancesPtr.RemoveAt(i);
                             break;
@@ -206,18 +206,18 @@
 
                 case InputManager.UserInput.listCommands:
                     Console.Clear();
-                    List<List<string>> listOfCommands = hid.fetchListOfAliasesAndCommands();
-                    hid.writeLine("Command List", 5);
+                    List<List<string>> listOfCommands = hid.FetchCommandList();
+                    hid.WriteLine("Command List", 5);
                     Console.WriteLine("\n");
                     for (int i = 0; i < listOfCommands.Count(); i++) {
-                        hid.writeLine($"Command: {listOfCommands[i][0]}", 5);
-                        for (int j = 0; j < (hid.getMaxCommandLength() - listOfCommands[i][0].Length); j++) {
+                        hid.WriteLine($"Command: {listOfCommands[i][0]}", 5);
+                        for (int j = 0; j < (hid.GetMaxCommandLength() - listOfCommands[i][0].Length); j++) {
                             Console.Write(" ");
                         }
                         Console.Write(" | ");
-                        hid.writeLine("Aliases: ", 5);
+                        hid.WriteLine("Aliases: ", 5);
                         for (int j = 1; j < listOfCommands[i].Count(); j++) {
-                            hid.writeLine("\"" + listOfCommands[i][j] + "\" ", 5);
+                            hid.WriteLine("\"" + listOfCommands[i][j] + "\" ", 5);
                         }
                         Console.WriteLine();
                     }

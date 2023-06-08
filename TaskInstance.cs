@@ -1,6 +1,6 @@
 ﻿namespace reMind_me {
     internal class TaskInstance {
-        private String name;
+        private string name;
         public enum taskSize {
             Tiny, Small, Medium, Large, Huge
         }
@@ -12,7 +12,7 @@
         private DateTime due;
         private uint id;
 
-        public TaskInstance(String taskName, int sizeOfTask, int priorityOfTask, DateTime dueDate, uint identifier) {
+        public TaskInstance(string taskName, int sizeOfTask, int priorityOfTask, DateTime dueDate, uint identifier) {
             name = taskName;
 
             switch (sizeOfTask) {
@@ -55,24 +55,24 @@
 
         }
 
-        public String getName() { return name; }
-        public taskPriority getPriority() { return priority; }
-        public taskSize getSize() { return size; }
-        public String getUiPriority() { return priority.ToString(); }
-        public String getUiSize() { return size.ToString(); }
-        public uint getID() { return id; }
+        public string GetName() { return name; }
+        public taskPriority GetPriority() { return priority; }
+        public taskSize GetSize() { return size; }
+        public string GetUiPriority() { return priority.ToString(); }
+        public string GetUiSize() { return size.ToString(); }
+        public uint GetID() { return id; }
         /** Returns the due date in the correct format for the culture detected by .NET
          */
-        public String getDueDate() {
+        public string GetDueDate() {
             return due.ToString();
         }
-        public String[] getDatabaseEntry() {
+        public string[] GetDatabaseEntry() {
             DateManager date = new DateManager();
             return new string[] {
                 name,
                 ((int)size).ToString(),
                 ((int)priority).ToString(),
-                date.toDatabaseString(due),
+                date.ToDatabaseString(due),
                 id.ToString()
             };
         }

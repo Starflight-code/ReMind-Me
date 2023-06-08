@@ -4,17 +4,17 @@
         public TaskUtils(List<TaskInstance> instanceListPtr) {
             taskInstanceListPtr = instanceListPtr;
         }
-        public int findTaskIndex(string nameOfTask) {
+        public int FindTaskIndex(string nameOfTask) {
             for (int i = 0; i < taskInstanceListPtr.Count(); i++) {
-                if (taskInstanceListPtr[i].getName().ToLower() == nameOfTask.ToLower()) {
+                if (taskInstanceListPtr[i].GetName().ToLower() == nameOfTask.ToLower()) {
                     return i;
                 }
             }
             return -1;
         }
 
-        public bool removeTask(string nameOfTask) {
-            int index = findTaskIndex(nameOfTask);
+        public bool RemoveTask(string nameOfTask) {
+            int index = FindTaskIndex(nameOfTask);
             if (index == -1) {
                 return false;
             }
@@ -22,7 +22,7 @@
             return true;
         }
 
-        public bool removeTask(int index) {
+        public bool RemoveTask(int index) {
             if (index == -1) {
                 return false;
             }
@@ -30,7 +30,7 @@
             return true;
         }
 
-        public void addTask(TaskInstance task) {
+        public void AddTask(TaskInstance task) {
             for (int i = 0; i < taskInstanceListPtr.Count; i++) {
                 if (taskInstanceListPtr[i].getID == task.getID) {
                     return;

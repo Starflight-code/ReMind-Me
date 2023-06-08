@@ -26,10 +26,10 @@
             }
         }
 
-        public int getMaxCommandLength() {
+        public int GetMaxCommandLength() {
             return maxCommandLength;
         }
-        public void addAlias(string alias, string toCommand, UserInput mappedTo) {
+        public void AddAlias(string alias, string toCommand, UserInput mappedTo) {
             UserInput mappedToFetched;
             bool result = userInputToEnum.TryGetValue(toCommand.Trim().ToLower(), out mappedToFetched);
             if (mappedToFetched == mappedTo) {
@@ -46,29 +46,29 @@
             }
         }
 
-        public List<List<string>> fetchListOfAliasesAndCommands() {
+        public List<List<string>> FetchCommandList() {
             return masterCommandsAndAliases;
         }
 
         public InputManager(Settings settings) {
             this.settings = settings;
             addCommand("add", UserInput.addTask);
-            addAlias("a", "add", UserInput.addTask);
+            AddAlias("a", "add", UserInput.addTask);
             addCommand("remove", UserInput.removeTask);
-            addAlias("r", "remove", UserInput.removeTask);
+            AddAlias("r", "remove", UserInput.removeTask);
             addCommand("exit", UserInput.exitProgram);
-            addAlias("e", "exit", UserInput.exitProgram);
+            AddAlias("e", "exit", UserInput.exitProgram);
             addCommand("edit", UserInput.editTask);
             addCommand("help", UserInput.listCommands);
-            addAlias("h", "help", UserInput.listCommands);
+            AddAlias("h", "help", UserInput.listCommands);
         }
 
         /// Updates current settings to a new instance of the settings class
-        public void updateSettings(Settings settings) {
+        public void UpdateSettings(Settings settings) {
             this.settings = settings;
         }
 
-        public void writeLine(string x, int timeBetween, bool saveCPU = false) {
+        public void WriteLine(string x, int timeBetween, bool saveCPU = false) {
             if (settings.fastMode) { // disables animation for fast mode
                 Console.Write(x);
                 return;
@@ -90,7 +90,7 @@
                 }
             }
         }
-        private void handleInput(string input) {
+        private void HandleInput(string input) {
             UserInput returnVal;
             bool check = userInputToEnum.TryGetValue(input.ToLower(), out returnVal);
             if (!check) {
@@ -103,31 +103,31 @@
          * approvalConditon is a wrapped lambda accepting the string the user gives. This should check the string against some requirements and
          * return a bool. True, string is ready to be returned. False, ask the user again.
          */
-        public string askQuestion(string question, string ending, Func<string, bool> approvalCondition) {
+        public string AskQuestion(string question, string ending, Func<string, bool> approvalCondition) {
             string? output = null;
-            output = inputSanitizer(question, ending);
+            output = InputSanitizer(question, ending);
             while (!approvalCondition(output)) {
                 Console.WriteLine();
-                writeLine("We've detected an error with your input. Try again...", 5);
-                output = inputSanitizer(question, ending);
+                WriteLine("We've detected an error with your input. Try again...", 5);
+                output = InputSanitizer(question, ending);
             }
             return output;
         }
 
-        public string getUserInput() {
+        public string GetUserInput() {
             Console.WriteLine("\n");
-            writeLine("ReMind\\> ", 5);
+            WriteLine("ReMind\\> ", 5);
             string? input = Console.ReadLine();
             while (input == null || input == "") {
                 Console.WriteLine("\n");
-                writeLine("Invalid Input Detected. Try again...", 5);
-                writeLine("ReMind\\> ", 5);
+                WriteLine("Invalid Input Detected. Try again...", 5);
+                WriteLine("ReMind\\> ", 5);
                 input = Console.ReadLine();
             }
-            handleInput(input);
+            HandleInput(input);
             return input;
         }
-        public string inputSanitizer(string prompt, string ending = ":", bool skipSpacing = false)
+        public string InputSanitizer(string prompt, string ending = ":", bool skipSpacing = false)
         /** @param prompt is the question, [prompt]: <User places input here>
          * @param ending is what ends the question. prompt[: ] <input>
          * @param spacing 0 to leave a newline before and after question
@@ -137,7 +137,7 @@
             if (!skipSpacing) {
                 Console.WriteLine();
             }
-            writeLine(prompt + ending + " ", 5); // place newline in if spacing 
+            WriteLine(prompt + ending + " ", 5); // place newline in if spacing 
             string? input = Console.ReadLine();
             while (input == "" || input == null) {
                 Console.Write("\nOops, your input appears to have been invalid.\n" + prompt + ending);

@@ -4,21 +4,21 @@ namespace reMind_me {
     internal class DateManager {
         public DateManager() {
         }
-        public DateTime getCurrentDateTime() {
+        public static DateTime GetCurrentDateTime() {
             return DateTime.Now;
         }
-        public int getDaysBetween(DateTime toCompare, DateTime toCompareTo) {
+        public static int GetDaysBetween(DateTime toCompare, DateTime toCompareTo) {
             return toCompare.Subtract(toCompareTo).Days;
         }
-        public bool isPast(DateTime toCompare) {
+        public static bool IsPast(DateTime toCompare) {
             return DateTime.Now.CompareTo(toCompare) > 0 && !DateOnly.Equals(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(toCompare));
         }
 
         /**
          * Datebase string should be formatted as YEAR-MONTH-DAY-HOUR-MINUTE-SECOND
          */
-        public DateTime fromDatabaseString(string dateString) {
-            String[] brokenUpDate = dateString.Trim().Split('-');
+        public static DateTime FromDatabaseString(string dateString) {
+            string[] brokenUpDate = dateString.Trim().Split('-');
             if (brokenUpDate.Length != 6) {
                 return new DateTime();
             }
@@ -34,7 +34,7 @@ namespace reMind_me {
             return new DateTime(dateComponents[0], dateComponents[1], dateComponents[2], dateComponents[3], dateComponents[4], dateComponents[5]);
         }
 
-        public String toDatabaseString(DateTime instance) {
+        public string ToDatabaseString(DateTime instance) {
             StringBuilder sb = new StringBuilder();
             sb.Append(instance.Year);
             sb.Append('-');
@@ -50,7 +50,7 @@ namespace reMind_me {
             return sb.ToString();
         }
 
-        public string timeOfDay() {
+        public string TimeOfDay() {
             string time;
             int timeNow = DateTime.Now.Hour;
             if (timeNow < 12) {

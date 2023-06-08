@@ -8,20 +8,20 @@
         List<Task> taskList = new List<Task>();
         List<Task> garbageCollectors = new List<Task>();
         public FlatFileManager() { }
-        public void createNewFlatfile(string name, string[] toWrite) {
+        public void CreateNewFlatfile(string name, string[] toWrite) {
             taskList.Add(Task.Run(() => {
                 var x = File.Create(name);
                 x.Dispose();
                 File.WriteAllLines(name, toWrite);
             }));
         }
-        public string[] readFlatFile(string name) {
+        public string[] ReadFlatFile(string name) {
             return File.ReadAllLines(name);
         }
-        public bool checkIfExists(string name) {
+        public bool CheckIfExists(string name) {
             return File.Exists(name);
         }
-        public void writeFlatFile(string name, string[] toWrite, char mode = 'w') {
+        public void WriteFlatFile(string name, string[] toWrite, char mode = 'w') {
             taskList.Add(Task.Run(() => {
                 switch (mode) {
 
@@ -38,22 +38,22 @@
         /** Generates the array used for writing the manifest flat file, contains
          * all the data needed to regenerate the current list of task objects
          */
-        private string[] generateManifestToWrite(List<TaskInstance> tasks) {
+        private string[] GenerateManifestToWrite(List<TaskInstance> tasks) {
             List<string> databaseToWrite = new List<string>();
             for (int i = 0; i < tasks.Count; i++) {
-                databaseToWrite.AddRange(tasks[i].getDatabaseEntry());
+                databaseToWrite.AddRange(tasks[i].GetDatabaseEntry());
             }
             return databaseToWrite.ToArray();
         }
 
         /** Writes a new manifest, containing all the data required to regenerate the list of task objects
          */
-        public void writeManifest(List<TaskInstance> tasks, string manifestPath) {
-            string[] manifestToWrite = generateManifestToWrite(tasks);
-            writeFlatFile(manifestPath, manifestToWrite, 'w');
+        public void WriteManifest(List<TaskInstance> tasks, string manifestPath) {
+            string[] manifestToWrite = GenerateManifestToWrite(tasks);
+            WriteFlatFile(manifestPath, manifestToWrite, 'w');
         }
-        public List<List<string>> parseFlatFile(string name, flatFileType parseType) {
-            string[] content = readFlatFile(name);
+        public List<List<string>> ParseFlatFile(string name, flatFileType parseType) {
+            string[] content = ReadFlatFile(name);
 
             // creates a multidimentional array, includes 5 List<string> subarrays
             List<List<string>> parsedData = new List<List<string>>() {
@@ -89,7 +89,7 @@
             // returns data in format 
 
         }
-        public void startGarbageCollector() {
+        public void StartGarbageCollector() {
             garbageCollectors.Add(Task.Run(async () => {
 
                 for (int i = 0; i < taskList.Count; i++) {

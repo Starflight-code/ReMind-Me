@@ -37,7 +37,7 @@ void setup() {
      * Create a manifest within the folder, and grab it's path. Store within database.
      * Ask if they have DeStress, and where it is on their system (maybe just embed DeStress within it)
      */
-    ui.writeAllLines(statics.getWelcomeText(), 15, false);
+    ui.WriteAllLines(statics.GetWelcomeText(), 15, false);
 
 
     // function that will check over user input, used by askQuestion method of InputManager
@@ -48,10 +48,10 @@ void setup() {
         return false;
     };
 
-    string fullName = ui.hid.askQuestion("What is your name (First and Last)", "? ", checkForValidName);
+    string fullName = ui.hid.AskQuestion("What is your name (First and Last)", "? ", checkForValidName);
 
 
-    ui.pleaseWait("creating reMind's database");
+    ui.PleaseWait("creating reMind's database");
     string[] databaseContent = {
         fullName.Split(" ")[0],
         fullName.Split(" ")[1],
@@ -63,8 +63,8 @@ void setup() {
         ""
     };
     Directory.CreateDirectory(DIRPATH);
-    flat.createNewFlatfile(DB_PATH, databaseContent);
-    flat.createNewFlatfile($"{DIRPATH}\\manifest.db", manifestContent);
+    flat.CreateNewFlatfile(DB_PATH, databaseContent);
+    flat.CreateNewFlatfile($"{DIRPATH}\\manifest.db", manifestContent);
 
     Console.Clear();
     Console.WriteLine("Done! Starting reMind...");
@@ -73,7 +73,7 @@ void setup() {
 /** Opens up and reads the database, importing data
  */
 void parseDB() {
-    List<List<string>> databaseParsed = flat.parseFlatFile(DB_PATH, FlatFileManager.flatFileType.Database);
+    List<List<string>> databaseParsed = flat.ParseFlatFile(DB_PATH, FlatFileManager.flatFileType.Database);
     string[] fullName = {
         databaseParsed[0][0],
         databaseParsed[0][1]
@@ -90,11 +90,11 @@ void parseDB() {
  */
 Task<List<List<string>>> parseManifest(string MANIFEST) {
     DateManager manager = new DateManager();
-    manifestFile = flat.parseFlatFile(MANIFEST, FlatFileManager.flatFileType.Manifest);
+    manifestFile = flat.ParseFlatFile(MANIFEST, FlatFileManager.flatFileType.Manifest);
 
     for (int i = 0; i < manifestFile[0].Count; i++) {
         try {
-            taskInstances.Add(new TaskInstance(manifestFile[0][i], int.Parse(manifestFile[1][i].Trim()), int.Parse(manifestFile[2][i].Trim()), manager.fromDatabaseString(manifestFile[3][i]), uint.Parse(manifestFile[4][i])));
+            taskInstances.Add(new TaskInstance(manifestFile[0][i], int.Parse(manifestFile[1][i].Trim()), int.Parse(manifestFile[2][i].Trim()), manager.FromDatabaseString(manifestFile[3][i]), uint.Parse(manifestFile[4][i])));
         }
         catch {
             throw; // notify user later on, throwing for alpha stage debugging (database corruption/parsing issue)
@@ -103,7 +103,7 @@ Task<List<List<string>>> parseManifest(string MANIFEST) {
     return Task.FromResult(manifestFile);
 }
 List<string> welcomeMessage = new List<string> {
-    $"Good {date.timeOfDay().ToLower()},",
+    $"Good {date.TimeOfDay().ToLower()},",
     $"Let's take a look what tasks you have for today...",
     ""
 };
@@ -112,15 +112,15 @@ void printTasks() {
     for (int i = 0; i < taskInstances.Count; i++) {
 
         // taskName | Size: Small | Priority: Low | Due Date: 1/1/2020
-        ui.writeLine($"{taskInstances[i].getName()} | Size: {taskInstances[i].getUiSize()} | " +
-            $"Priority: {taskInstances[i].getUiPriority()} | Due Date: {taskInstances[i].getDueDate()}", 5);
+        ui.WriteLine($"{taskInstances[i].GetName()} | Size: {taskInstances[i].GetUiSize()} | " +
+            $"Priority: {taskInstances[i].GetUiPriority()} | Due Date: {taskInstances[i].GetDueDate()}", 5);
         Console.WriteLine();
     }
 }
 void mainUI() {
 
     // sets up database if it doesn't exist
-    if (!flat.checkIfExists(DB_PATH)) {
+    if (!flat.CheckIfExists(DB_PATH)) {
         setup();
         parseDB();
     } else {
@@ -131,26 +131,26 @@ void mainUI() {
     Thread.Sleep(500);
     Console.Clear();
 
-    ui.writeAllLines(welcomeMessage.ToArray(), 5);
+    ui.WriteAllLines(welcomeMessage.ToArray(), 5);
     manifestFile = manifest.GetAwaiter().GetResult();
 
     if (manifestFile[0].Count == 0) {
-        ui.writeLine("We don't seem to have any tasks. You have some time to relax!", 10);
-        ui.writeMainUI();
+        ui.WriteLine("We don't seem to have any tasks. You have some time to relax!", 10);
+        ui.WriteMainUI();
     } else {
         printTasks();
-        ui.writeMainUI();
+        ui.WriteMainUI();
     }
     while (true) {
-        input = ui.hid.getUserInput();
-        ui.printUI();
+        input = ui.hid.GetUserInput();
+        ui.PrintUI();
         Console.WriteLine("\n"); // adds 2 newlines
         printTasks();
-        ui.writeMainUI();
-        flat.writeManifest(taskInstances, MANIFEST);
+        ui.WriteMainUI();
+        flat.WriteManifest(taskInstances, MANIFEST);
     }
 }
-flat.startGarbageCollector();
+flat.StartGarbageCollector();
 mainUI();
 
 /* Main UI design
