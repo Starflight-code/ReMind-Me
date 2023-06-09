@@ -56,8 +56,8 @@
         }
 
         public string GetName() { return name; }
-        public taskPriority GetPriority() { return priority; }
-        public taskSize GetSize() { return size; }
+        public int GetPriority() { return (int)priority; }
+        public int GetSize() { return (int)size; }
         public string GetUiPriority() { return priority.ToString(); }
         public string GetUiSize() { return size.ToString(); }
         public uint GetID() { return id; }
@@ -108,9 +108,13 @@
             due = newDueDate;
         }
 
+        public DateTime GetDueDate() {
+            return due;
+        }
+
         /** Returns the due date in the correct format for the culture detected by .NET
          */
-        public string GetDueDate() {
+        public string GetUiDueDate() {
             return due.ToString();
         }
         public string[] GetDatabaseEntry() {

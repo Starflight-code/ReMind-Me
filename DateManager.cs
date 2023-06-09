@@ -10,6 +10,11 @@ namespace reMind_me {
         public int GetDaysBetween(DateTime toCompare, DateTime toCompareTo) {
             return toCompare.Subtract(toCompareTo).Days;
         }
+
+        public int GetDaysFromNow(DateTime toCompare) {
+            return toCompare.Subtract(DateTime.Now).Days;
+        }
+
         public bool IsPast(DateTime toCompare) {
             return DateTime.Now.CompareTo(toCompare) > 0 && !DateOnly.Equals(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(toCompare));
         }

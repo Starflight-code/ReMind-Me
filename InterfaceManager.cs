@@ -83,7 +83,7 @@
         }
         public string GenerateTaskString(int index) {
             return new string($"{taskInstancesPtr[index].GetName()} | Size: {taskInstancesPtr[index].GetUiSize()} | " +
-                    $"Priority: {taskInstancesPtr[index].GetUiPriority()} | Due Date: {taskInstancesPtr[index].GetDueDate()}");
+                    $"Priority: {taskInstancesPtr[index].GetUiPriority()} | Due Date: {taskInstancesPtr[index].GetUiDueDate()}");
         }
 
         public void PrintTasks() {
@@ -91,7 +91,7 @@
 
                 // taskName | Size: Small | Priority: Low | Due Date: 1/1/2020
                 WriteLine($"{taskInstancesPtr[i].GetName()} | Size: {taskInstancesPtr[i].GetUiSize()} | " +
-                    $"Priority: {taskInstancesPtr[i].GetUiPriority()} | Due Date: {taskInstancesPtr[i].GetDueDate()}", 5);
+                    $"Priority: {taskInstancesPtr[i].GetUiPriority()} | Due Date: {taskInstancesPtr[i].GetUiDueDate()}", 5);
                 Console.WriteLine();
             }
         }
@@ -133,7 +133,7 @@
             String[] toWrite = {task.GetName(),
                     "Size: " + task.GetUiSize(),
                     "Priority: " + task.GetUiPriority(),
-                    "Due: " + task.GetDueDate()
+                    "Due: " + task.GetUiDueDate()
             };
             WriteAllLines(toWrite, 10);
         }
@@ -269,7 +269,7 @@
 
                 case InputManager.UserInput.listCommands:
                     Console.Clear();
-                    List<InputManager.command> listOfCommands = hid.FetchCommandList();
+                    List<InputManager.command> listOfCommands = hid.FetchCommandList(); // list of command struct objects
                     hid.WriteLine("Command List", 5);
                     Console.WriteLine("\n");
 
@@ -283,7 +283,7 @@
                         hid.WriteLine("Aliases: ", 5);
 
                         for (int j = 0; j < listOfCommands[i].aliases.Count(); j++) {
-                            hid.WriteLine("\"" + listOfCommands[i].aliases[j] + "\" ", 5);
+                            hid.WriteLine($"\"{listOfCommands[i].aliases[j]}\" ", 5);
                         }
 
                         Console.WriteLine();
