@@ -5,6 +5,7 @@
 
         }
 
+        // Lambdas below are used for input validation, checks if the input is a parsable/valid value
         public Func<string, bool> checkTaskSize = (string x) => {
             string[] acceptedInputs = new string[] { "0", "1", "2", "3", "4", "tiny", "small", "medium", "large", "huge" };
             return acceptedInputs.Contains(x.ToLower());

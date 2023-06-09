@@ -37,7 +37,7 @@ void setup() {
      * Create a manifest within the folder, and grab it's path. Store within database.
      * Ask if they have DeStress, and where it is on their system (maybe just embed DeStress within it)
      */
-    ui.WriteAllLines(statics.GetWelcomeText(), 15, false);
+    ui.utils.WriteAllLines(statics.GetWelcomeText(), 15, false);
 
 
     // function that will check over user input, used by askQuestion method of InputManager
@@ -48,7 +48,7 @@ void setup() {
         return false;
     };
 
-    string fullName = ui.hid.AskQuestion("What is your name (First and Last)", "? ", checkForValidName);
+    string fullName = ui.hid.utils.AskQuestion("What is your name (First and Last)", "? ", checkForValidName);
 
 
     ui.PleaseWait("creating reMind's database");
@@ -108,7 +108,7 @@ List<string> welcomeMessage = new List<string> {
     ""
 };
 void mainUI() {
-    UserManager user = new UserManager(taskInstances);
+    UserManager user = new UserManager(taskInstances, flat.taskList);
     // sets up database if it doesn't exist
     if (!flat.CheckIfExists(DB_PATH)) {
         setup();
@@ -121,13 +121,13 @@ void mainUI() {
     Thread.Sleep(500);
     Console.Clear();
 
-    ui.WriteAllLines(welcomeMessage.ToArray(), 5);
+    ui.utils.WriteAllLines(welcomeMessage.ToArray(), 5);
     manifestFile = manifest.GetAwaiter().GetResult();
     user.categorizeTasks();
 
 
     if (manifestFile[0].Count == 0) {
-        ui.WriteLine("We don't seem to have any tasks. You have some time to relax!", 10);
+        ui.utils.WriteLine("We don't seem to have any tasks. You have some time to relax!", 10);
         ui.WriteMainUI();
     } else {
         ui.PrintTasks();

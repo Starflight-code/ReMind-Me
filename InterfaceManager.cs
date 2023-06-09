@@ -3,6 +3,7 @@
         List<TaskInstance> taskInstancesPtr;
         public InputManager hid;
         public Settings settings;
+        public InterfaceUtils utils;
         private DateManager date = new DateManager();
         private readonly Dictionary<string, int> priorityConverter = new Dictionary<string, int>();
         private readonly Dictionary<string, int> sizeConverter = new Dictionary<string, int>();
@@ -14,6 +15,7 @@
             // sets up input manager and interface manager with current settings
             hid = new InputManager(settings);
             this.settings = settings;
+            utils = new InterfaceUtils(settings.fastMode);
 
             // populates priority dictionary
             priorityConverter.Add("0", 0);
@@ -55,7 +57,7 @@
             priorityConverter.TryGetValue(taskPriority, out priorityOfTask);
             taskInstancesPtr.Add(new TaskInstance(taskName, sizeOfTask, priorityOfTask, date.FromDatabaseString(taskDueDate), lastIdentifier + 1));
         }
-        public void writeAllLines(string[] x) {
+        /*public void writeAllLines(string[] x) {
             for (int i = 0; i < x.Length; i++) {
                 Console.WriteLine(x[i]);
             }
@@ -80,7 +82,7 @@
                 }
                 Console.WriteLine();
             }
-        }
+        }*/
         public string GenerateTaskString(int index) {
             return new string($"{taskInstancesPtr[index].GetName()} | Size: {taskInstancesPtr[index].GetUiSize()} | " +
                     $"Priority: {taskInstancesPtr[index].GetUiPriority()} | Due Date: {taskInstancesPtr[index].GetUiDueDate()}");
@@ -90,11 +92,11 @@
             for (int i = 0; i < taskInstancesPtr.Count; i++) {
 
                 // taskName | Size: Small | Priority: Low | Due Date: 1/1/2020
-                WriteLine($"{taskInstancesPtr[i].GetName()} | Size: {taskInstancesPtr[i].GetUiSize()} | " +
-                    $"Priority: {taskInstancesPtr[i].GetUiPriority()} | Due Date: {taskInstancesPtr[i].GetUiDueDate()}", 5);
+                utils.WriteLine($"{GenerateTaskString(i)}", 3, true);
                 Console.WriteLine();
             }
         }
+        /*
         public void WriteLine(string x, int timeBetween, bool saveCPU = false) {
             if (saveCPU) {
                 string[] words = x.Split(' ');
@@ -112,7 +114,7 @@
                     Thread.Sleep(timeBetween);
                 }
             }
-        }
+        }*/
         public void PleaseWait(string waitingFor) {
             string[] waitLines = {
             "Just a moment",
@@ -126,7 +128,7 @@
 
         public void WriteMainUI() {
             Console.WriteLine('\n');
-            WriteLine("ADD: Create a new task", 5);
+            utils.WriteLine("HELP: Get a list of available commands and aliases", 5);
         }
         public void EditTaskUI(TaskInstance task) {
             Console.Clear();
@@ -135,7 +137,7 @@
                     "Priority: " + task.GetUiPriority(),
                     "Due: " + task.GetUiDueDate()
             };
-            WriteAllLines(toWrite, 10);
+            utils.WriteAllLines(toWrite, 10);
         }
 
         public void PrintUI() {
@@ -147,20 +149,20 @@
 
                 case InputManager.UserInput.addTask:
                     Console.Clear();
-                    name = hid.InputSanitizer("What is the name of this task", "?", true);
+                    name = hid.utils.InputSanitizer("What is the name of this task", "?", true);
                     Console.Clear();
 
-                    WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
-                    string size = hid.AskQuestion("What is the size of this task", "?", algo.checkTaskSize);
-
-                    Console.Clear();
-
-                    WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
-                    string priority = hid.AskQuestion("What is the priority of this task", "?", algo.checkTaskPriority);
+                    utils.WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
+                    string size = hid.utils.AskQuestion("What is the size of this task", "?", algo.checkTaskSize);
 
                     Console.Clear();
 
-                    string dueDate = hid.AskQuestion("What is the due date for this task", "?", algo.checkDueDate);
+                    utils.WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
+                    string priority = hid.utils.AskQuestion("What is the priority of this task", "?", algo.checkTaskPriority);
+
+                    Console.Clear();
+
+                    string dueDate = hid.utils.AskQuestion("What is the due date for this task", "?", algo.checkDueDate);
                     DateTime dueDateObject = DateTime.Parse(dueDate);
 
                     Console.Clear();
@@ -170,13 +172,13 @@
                     priorityConverter.TryGetValue(priority, out priorityValue);
                     taskInstancesPtr.Add(new TaskInstance(name, sizeValue, priorityValue, dueDateObject, lastIdentifier + 1));
 
-                    WriteLine("Thank you, your task has been added!", 2);
+                    utils.WriteLine("Thank you, your task has been added!", 2);
                     break;
 
                 case InputManager.UserInput.removeTask:
                     Console.Clear();
                     PrintTasks();
-                    name = hid.InputSanitizer("What is the name of this task you'd like to remove", "?", true);
+                    name = hid.utils.InputSanitizer("What is the name of this task you'd like to remove", "?", true);
                     foundName = false;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
                         if (taskInstancesPtr[i].GetName().ToLower() == name.ToLower()) {
@@ -187,9 +189,9 @@
                     }
                     Console.Clear();
                     if (foundName) {
-                        WriteLine($"Task '{name}' removed successfully!", 5);
+                        utils.WriteLine($"Task '{name}' removed successfully!", 5);
                     } else {
-                        WriteLine($"Task '{name}' not found. Removal failed!", 5);
+                        utils.WriteLine($"Task '{name}' not found. Removal failed!", 5);
                     }
                     break;
 
@@ -202,7 +204,7 @@
                     PrintTasks();
                     Console.WriteLine();
 
-                    name = hid.InputSanitizer("What is the name of this task you'd like to edit", "?", true);
+                    name = hid.utils.InputSanitizer("What is the name of this task you'd like to edit", "?", true);
                     foundName = false;
                     int index = 0;
                     for (int i = 0; i < taskInstancesPtr.Count(); i++) {
@@ -219,11 +221,11 @@
 
                     // show "Task selected (taskName | Size: Medium | Priority: Urgent | Due Date: 1/1/2000 1:00:00 AM)" in console, with specific task info substituted
                     Console.WriteLine();
-                    WriteLine("Task selected (", 10);
-                    WriteLine(GenerateTaskString(index) + ")", 10);
+                    utils.WriteLine("Task selected (", 10);
+                    utils.WriteLine(GenerateTaskString(index) + ")", 10);
                     Console.WriteLine();
 
-                    WriteAllLines(new string[] {
+                    utils.WriteAllLines(new string[] {
                     "1. Edit Task Name",
                     "2. Edit Task Size",
                     "3. Edit Task Priority",
@@ -233,31 +235,31 @@
                     Func<string, bool> getIntegerValueOneToFour = (string x) => {
                         return (x == "1" || x == "2" || x == "3" || x == "4"); // if x is 1, 2, 3, or 4
                     };
-                    string? input = hid.AskQuestion("Which task component would you like to edit", "?", getIntegerValueOneToFour);
+                    string? input = hid.utils.AskQuestion("Which task component would you like to edit", "?", getIntegerValueOneToFour);
                     int editRequested = int.Parse(input);
                     Console.WriteLine();
 
                     switch (editRequested) {
                         case 1:
-                            name = hid.InputSanitizer("What is the new name of this task", "?", true);
+                            name = hid.utils.InputSanitizer("What is the new name of this task", "?", true);
                             Console.Clear();
                             break;
                         case 2:
-                            WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
-                            size = hid.AskQuestion("What is the new size of this task", "?", algo.checkTaskSize);
+                            utils.WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
+                            size = hid.utils.AskQuestion("What is the new size of this task", "?", algo.checkTaskSize);
 
                             sizeConverter.TryGetValue(size, out sizeValue);
                             taskInstancesPtr[index].SetSize(sizeValue);
                             break;
                         case 3:
-                            WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
-                            priority = hid.AskQuestion("What is the new priority of this task", "?", algo.checkTaskPriority);
+                            utils.WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
+                            priority = hid.utils.AskQuestion("What is the new priority of this task", "?", algo.checkTaskPriority);
 
                             priorityConverter.TryGetValue(priority, out priorityValue);
                             taskInstancesPtr[index].SetPriority(priorityValue);
                             break;
                         case 4:
-                            dueDate = hid.AskQuestion("What is the new due date for this task", "?", algo.checkDueDate);
+                            dueDate = hid.utils.AskQuestion("What is the new due date for this task", "?", algo.checkDueDate);
                             dueDateObject = DateTime.Parse(dueDate);
 
                             taskInstancesPtr[index].SetDueDate(dueDateObject);
@@ -270,20 +272,20 @@
                 case InputManager.UserInput.listCommands:
                     Console.Clear();
                     List<InputManager.command> listOfCommands = hid.FetchCommandList(); // list of command struct objects
-                    hid.WriteLine("Command List", 5);
+                    hid.utils.WriteLine("Command List", 5);
                     Console.WriteLine("\n");
 
                     for (int i = 0; i < listOfCommands.Count(); i++) {
-                        hid.WriteLine($"Command: {listOfCommands[i].commandName}", 5);
+                        hid.utils.WriteLine($"Command: {listOfCommands[i].commandName}", 5);
                         for (int j = 0; j < (hid.GetMaxCommandLength() - listOfCommands[i].commandName.Length); j++) {
                             Console.Write(" ");
                         }
 
                         Console.Write(" | ");
-                        hid.WriteLine("Aliases: ", 5);
+                        hid.utils.WriteLine("Aliases: ", 5);
 
                         for (int j = 0; j < listOfCommands[i].aliases.Count(); j++) {
-                            hid.WriteLine($"\"{listOfCommands[i].aliases[j]}\" ", 5);
+                            hid.utils.WriteLine($"\"{listOfCommands[i].aliases[j]}\" ", 5);
                         }
 
                         Console.WriteLine();

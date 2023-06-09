@@ -5,7 +5,7 @@
             Database
         }
 
-        List<Task> taskList = new List<Task>();
+        public List<Task> taskList = new List<Task>();
         List<Task> garbageCollectors = new List<Task>();
         public FlatFileManager() { }
         public void CreateNewFlatfile(string name, string[] toWrite) {
