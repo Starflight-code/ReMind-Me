@@ -108,7 +108,7 @@ List<string> welcomeMessage = new List<string> {
     ""
 };
 void mainUI() {
-
+    UserManager user = new UserManager(taskInstances);
     // sets up database if it doesn't exist
     if (!flat.CheckIfExists(DB_PATH)) {
         setup();
@@ -123,6 +123,8 @@ void mainUI() {
 
     ui.WriteAllLines(welcomeMessage.ToArray(), 5);
     manifestFile = manifest.GetAwaiter().GetResult();
+    user.categorizeTasks();
+
 
     if (manifestFile[0].Count == 0) {
         ui.WriteLine("We don't seem to have any tasks. You have some time to relax!", 10);

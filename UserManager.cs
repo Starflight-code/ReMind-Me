@@ -2,7 +2,7 @@
     internal class UserManager {
         private List<TaskInstance> TaskInstancePtr;
         private List<Task> taskList;
-        struct taskMetrics {
+        public struct taskMetrics {
             public int[] priorities; // 0: None 1: Low 2: Medium 3: High 4: Urgent
 
             public int[] sizes; // 0: Tiny 1: Small 2: Medium 3: Large 4: Huge
@@ -60,39 +60,40 @@
             }
         }
 
-        taskMetrics currentTaskMetrics;
+        public taskMetrics metrics;
         public UserManager(List<TaskInstance> taskInstances) {
             TaskInstancePtr = taskInstances;
             taskList = new List<Task>();
+            metrics = new taskMetrics();
         }
 
         public void categorizeTasks() {
-            currentTaskMetrics.resetMetrics();
+            metrics.resetMetrics();
             taskList.Add(Task.Run(() => {
                 DateManager date = new DateManager();
                 for (int i = 0; i < TaskInstancePtr.Count; i++) {
-                    currentTaskMetrics.priorities[TaskInstancePtr[i].GetPriority()] += 1;
-                    currentTaskMetrics.sizes[TaskInstancePtr[i].GetSize()] += 1;
+                    metrics.priorities[TaskInstancePtr[i].GetPriority()] += 1;
+                    metrics.sizes[TaskInstancePtr[i].GetSize()] += 1;
 
                     int days = date.GetDaysFromNow(TaskInstancePtr[i].GetDueDate());
 
-                    currentTaskMetrics.minDueDate = Math.Min(days, currentTaskMetrics.minDueDate);
-                    currentTaskMetrics.maxDueDate = Math.Max(days, currentTaskMetrics.maxDueDate);
+                    metrics.minDueDate = Math.Min(days, metrics.minDueDate);
+                    metrics.maxDueDate = Math.Max(days, metrics.maxDueDate);
 
-                    currentTaskMetrics.totalTasks += 1;
-                    currentTaskMetrics.sum += days;
-                    currentTaskMetrics.daysUntilDue.Add(days);
+                    metrics.totalTasks += 1;
+                    metrics.sum += days;
+                    metrics.daysUntilDue.Add(days);
                 }
-                currentTaskMetrics.medianDueDate = currentTaskMetrics.sum / currentTaskMetrics.totalTasks;
-                currentTaskMetrics.daysUntilDue.Sort();
+                metrics.medianDueDate = metrics.sum / metrics.totalTasks;
+                metrics.daysUntilDue.Sort();
 
-                if (Math.Round((float)currentTaskMetrics.totalTasks / 4, 4) % 1 == 0) { // check if it's a decimal or an int
+                if (Math.Round((float)metrics.totalTasks / 4, 4) % 1 == 0) { // check if it's a decimal or an int
                     // it's an int
-                    currentTaskMetrics.Q1DueDate = (currentTaskMetrics.daysUntilDue[currentTaskMetrics.totalTasks / 4] + currentTaskMetrics.daysUntilDue[currentTaskMetrics.totalTasks / 4 + 1]) / 2;
-                    currentTaskMetrics.Q3DueDate = (currentTaskMetrics.daysUntilDue[currentTaskMetrics.totalTasks * 3 / 4] + currentTaskMetrics.daysUntilDue[currentTaskMetrics.totalTasks * 3 / 4 + 1]) / 2;
+                    metrics.Q1DueDate = (metrics.daysUntilDue[metrics.totalTasks / 4 - 1] + metrics.daysUntilDue[metrics.totalTasks / 4]) / 2;
+                    metrics.Q3DueDate = (metrics.daysUntilDue[metrics.totalTasks * 3 / 4 - 1] + metrics.daysUntilDue[metrics.totalTasks * 3 / 4]) / 2;
                 } else { // it's not an int
-                    currentTaskMetrics.Q1DueDate = currentTaskMetrics.daysUntilDue[(int)Math.Ceiling((double)currentTaskMetrics.totalTasks / 4)];
-                    currentTaskMetrics.Q3DueDate = currentTaskMetrics.daysUntilDue[(int)Math.Ceiling((double)currentTaskMetrics.totalTasks * 3 / 4)];
+                    metrics.Q1DueDate = metrics.daysUntilDue[(int)Math.Ceiling((double)metrics.totalTasks / 4) - 1];
+                    metrics.Q3DueDate = metrics.daysUntilDue[(int)Math.Ceiling((double)metrics.totalTasks * 3 / 4) - 1];
                 }
             }));
 
