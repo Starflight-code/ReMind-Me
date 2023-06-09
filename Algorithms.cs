@@ -19,6 +19,5 @@
         public Func<string, bool> checkDueDate = (string x) => {
             return DateTime.TryParse(x, out _);
         };
-
     }
 }

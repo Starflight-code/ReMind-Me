@@ -15,7 +15,7 @@
             // sets up input manager and interface manager with current settings
             hid = new InputManager(settings);
             this.settings = settings;
-            utils = new InterfaceUtils(settings.fastMode);
+            utils = new InterfaceUtils(settings);
 
             // populates priority dictionary
             priorityConverter.Add("0", 0);
@@ -57,32 +57,6 @@
             priorityConverter.TryGetValue(taskPriority, out priorityOfTask);
             taskInstancesPtr.Add(new TaskInstance(taskName, sizeOfTask, priorityOfTask, date.FromDatabaseString(taskDueDate), lastIdentifier + 1));
         }
-        /*public void writeAllLines(string[] x) {
-            for (int i = 0; i < x.Length; i++) {
-                Console.WriteLine(x[i]);
-            }
-        }
-        public void WriteAllLines(string[] x, int timeBetween, bool saveCPU = false) {
-            for (int i = 0; i < x.Length; i++) {
-                if (saveCPU) { // prints one word at a time instead of characters
-                    string[] words = x[i].Split(' ');
-                    for (int j = 0; j < words.Length; j++) {
-                        if (j != (words.Length - 1)) {
-                            Console.Write(words[j] + " ");
-                        } else {
-                            Console.Write(words[j]);
-                        }
-                        Thread.Sleep(timeBetween);
-                    }
-                } else {
-                    for (int j = 0; j < x[i].Length; j++) {
-                        Console.Write(x[i][j]);
-                        Thread.Sleep(timeBetween);
-                    }
-                }
-                Console.WriteLine();
-            }
-        }*/
         public string GenerateTaskString(int index) {
             return new string($"{taskInstancesPtr[index].GetName()} | Size: {taskInstancesPtr[index].GetUiSize()} | " +
                     $"Priority: {taskInstancesPtr[index].GetUiPriority()} | Due Date: {taskInstancesPtr[index].GetUiDueDate()}");
@@ -96,25 +70,6 @@
                 Console.WriteLine();
             }
         }
-        /*
-        public void WriteLine(string x, int timeBetween, bool saveCPU = false) {
-            if (saveCPU) {
-                string[] words = x.Split(' ');
-                for (int i = 0; i < words.Length; i++) {
-                    if (i != (words.Length - 1)) {
-                        Console.Write(words[i] + " ");
-                    } else {
-                        Console.Write(words[i]);
-                    }
-                    Thread.Sleep(timeBetween);
-                }
-            } else {
-                for (int i = 0; i < x.Length; i++) {
-                    Console.Write(x[i]);
-                    Thread.Sleep(timeBetween);
-                }
-            }
-        }*/
         public void PleaseWait(string waitingFor) {
             string[] waitLines = {
             "Just a moment",
@@ -140,7 +95,7 @@
             utils.WriteAllLines(toWrite, 10);
         }
 
-        public void PrintUI() {
+        public void AcceptCommands() {
             string name;
             bool foundName;
             Algorithms algo = new Algorithms();

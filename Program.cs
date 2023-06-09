@@ -123,7 +123,7 @@ void mainUI() {
 
     ui.utils.WriteAllLines(welcomeMessage.ToArray(), 5);
     manifestFile = manifest.GetAwaiter().GetResult();
-    user.categorizeTasks();
+    user.calculateTaskPriorities();
 
 
     if (manifestFile[0].Count == 0) {
@@ -135,7 +135,7 @@ void mainUI() {
     }
     while (true) {
         input = ui.hid.GetUserInput();
-        ui.PrintUI();
+        ui.AcceptCommands();
         Console.WriteLine("\n"); // adds 2 newlines
         ui.PrintTasks();
         ui.WriteMainUI();

@@ -1,8 +1,8 @@
 ﻿namespace reMind_me {
     internal class InterfaceUtils {
-        bool fastMode;
-        public InterfaceUtils(bool fastMode) {
-            this.fastMode = fastMode;
+        Settings settings;
+        public InterfaceUtils(Settings currentSettings) {
+            settings = currentSettings;
         }
 
         public void writeAllLines(string[] x) {
@@ -36,7 +36,7 @@
             return;
         }
         public void WriteLine(string x, int timeBetween, bool saveCPU = false) {
-            if (fastMode) { // disables animation for fast mode
+            if (settings.fastMode) { // disables animation for fast mode
                 Console.Write(x);
                 return;
             }
@@ -92,8 +92,8 @@
             return input.Trim();
         }
 
-        public void UpdateFastMode(bool newFastModeSetting) {
-            fastMode = newFastModeSetting;
+        public void UpdateSettings(Settings updatedSettings) {
+            settings = updatedSettings;
         }
     }
 }
