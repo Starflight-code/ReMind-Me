@@ -61,6 +61,53 @@
         public string GetUiPriority() { return priority.ToString(); }
         public string GetUiSize() { return size.ToString(); }
         public uint GetID() { return id; }
+
+        public void SetName(string newName) {
+            name = newName;
+        }
+        public void SetSize(int newSize) {
+            switch (newSize) {
+                case 0:
+                    size = taskSize.Tiny;
+                    break;
+                case 1:
+                    size = taskSize.Small;
+                    break;
+                case 2:
+                    size = taskSize.Medium;
+                    break;
+                case 3:
+                    size = taskSize.Large;
+                    break;
+                case 4:
+                    size = taskSize.Huge;
+                    break;
+            }
+        }
+        public void SetPriority(int newPriority) {
+            switch (newPriority) {
+                case 0:
+                    priority = taskPriority.None;
+                    break;
+                case 1:
+                    priority = taskPriority.Low;
+                    break;
+                case 2:
+                    priority = taskPriority.Medium;
+                    break;
+                case 3:
+                    priority = taskPriority.High;
+                    break;
+                case 4:
+                    priority = taskPriority.Urgent;
+                    break;
+            }
+        }
+
+        public void SetDueDate(DateTime newDueDate) {
+            due = newDueDate;
+        }
+
         /** Returns the due date in the correct format for the culture detected by .NET
          */
         public string GetDueDate() {

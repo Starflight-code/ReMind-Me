@@ -8,18 +8,27 @@
             editTask,
             listCommands
         }
+
+        public struct command {
+            public string commandName;
+            public List<string> aliases;
+            public command(string command) {
+                commandName = command;
+                aliases = new List<string>();
+            }
+        }
         public Settings settings;
         public UserInput currentUserInput;
         // dictionary converting commands to enums, allowing them to be processed more easily
         Dictionary<string, UserInput> userInputToEnum = new Dictionary<string, UserInput>();
 
         // Sublist = {Master Command, Alias1, Alias2}
-        List<List<string>> masterCommandsAndAliases = new List<List<string>>();
+        List<command> masterCommandsAndAliases = new List<command>();
 
         int maxCommandLength = 0;
 
         public void addCommand(string command, UserInput mappedTo) {
-            masterCommandsAndAliases.Add(new List<string> { command.Trim().ToLower() });
+            masterCommandsAndAliases.Add(new command(command));
             userInputToEnum.Add(command.Trim().ToLower(), mappedTo);
             if (maxCommandLength < command.Trim().Length) {
                 maxCommandLength = command.Trim().Length;
@@ -29,38 +38,38 @@
         public int GetMaxCommandLength() {
             return maxCommandLength;
         }
-        public void AddAlias(string alias, string toCommand, UserInput mappedTo) {
-            UserInput mappedToFetched;
-            bool result = userInputToEnum.TryGetValue(toCommand.Trim().ToLower(), out mappedToFetched);
-            if (mappedToFetched == mappedTo) {
-                for (int i = 0; i < masterCommandsAndAliases.Count(); i++) { // finds the sublist for the master command and appends the alias to it
-                    if (masterCommandsAndAliases[i][0] == toCommand.Trim().ToLower()) {
-                        masterCommandsAndAliases[i].Add(alias);
-                        break;
-                    }
+        public void AddAlias(string alias, string toCommand) {
+            UserInput mappedTo;
+            bool found = false;
+            bool result = userInputToEnum.TryGetValue(toCommand.Trim().ToLower(), out mappedTo);
+            for (int i = 0; i < masterCommandsAndAliases.Count(); i++) { // finds the sublist for the master command and appends the alias to it
+                if (masterCommandsAndAliases[i].commandName == toCommand.Trim().ToLower()) {
+                    found = true;
+                    masterCommandsAndAliases[i].aliases.Add(alias);
+                    break;
                 }
-                userInputToEnum.Add(alias.Trim().ToLower(), mappedTo);
-            } else {
-                // ERROR, if this was executed it means the alias was registered with invalid data
-                throw new Exception($"A command was registered incorrectly! Debug: Alias was {alias}, Command was {toCommand}, enum value was {mappedTo}, result of fetch was {result}");
             }
+            if (found == false) {
+                return;
+            }
+            userInputToEnum.Add(alias.Trim().ToLower(), mappedTo);
         }
 
-        public List<List<string>> FetchCommandList() {
+        public List<command> FetchCommandList() {
             return masterCommandsAndAliases;
         }
 
         public InputManager(Settings settings) {
             this.settings = settings;
             addCommand("add", UserInput.addTask);
-            AddAlias("a", "add", UserInput.addTask);
+            AddAlias("a", "add");
             addCommand("remove", UserInput.removeTask);
-            AddAlias("r", "remove", UserInput.removeTask);
+            AddAlias("r", "remove");
             addCommand("exit", UserInput.exitProgram);
-            AddAlias("e", "exit", UserInput.exitProgram);
+            AddAlias("e", "exit");
             addCommand("edit", UserInput.editTask);
             addCommand("help", UserInput.listCommands);
-            AddAlias("h", "help", UserInput.listCommands);
+            AddAlias("h", "help");
         }
 
         /// Updates current settings to a new instance of the settings class

@@ -141,6 +141,7 @@
         public void PrintUI() {
             string name;
             bool foundName;
+            Algorithms algo = new Algorithms();
 
             switch (hid.currentUserInput) {
 
@@ -149,29 +150,20 @@
                     name = hid.InputSanitizer("What is the name of this task", "?", true);
                     Console.Clear();
 
-                    Func<string, bool> checkTaskSize = (string x) => {
-                        string[] acceptedInputs = new string[] { "0", "1", "2", "3", "4", "tiny", "small", "medium", "large", "huge" };
-                        return acceptedInputs.Contains(x.ToLower());
-                    };
                     WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
-                    string size = hid.AskQuestion("What is the size of this task", "?", checkTaskSize);
+                    string size = hid.AskQuestion("What is the size of this task", "?", algo.checkTaskSize);
+
                     Console.Clear();
 
-                    Func<string, bool> checkTaskPriority = (string x) => {
-                        string[] acceptedInputs = new string[] { "0", "1", "2", "3", "4", "none", "low", "medium", "high", "urgent" };
-                        return acceptedInputs.Contains(x.ToLower());
-                    };
                     WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
-                    string priority = hid.AskQuestion("What is the priority of this task", "?", checkTaskPriority);
+                    string priority = hid.AskQuestion("What is the priority of this task", "?", algo.checkTaskPriority);
+
                     Console.Clear();
 
-                    Func<string, bool> checkDueDate = (string x) => {
-                        return DateTime.TryParse(x, out _);
-                    };
-                    string dueDate = hid.AskQuestion("What is the due date for this task", "?", checkDueDate);
+                    string dueDate = hid.AskQuestion("What is the due date for this task", "?", algo.checkDueDate);
                     DateTime dueDateObject = DateTime.Parse(dueDate);
-                    Console.Clear();
 
+                    Console.Clear();
                     int sizeValue;
                     int priorityValue;
                     sizeConverter.TryGetValue(size, out sizeValue);
@@ -231,27 +223,67 @@
                     WriteLine(GenerateTaskString(index) + ")", 10);
                     Console.WriteLine();
 
+                    WriteAllLines(new string[] {
+                    "1. Edit Task Name",
+                    "2. Edit Task Size",
+                    "3. Edit Task Priority",
+                    "4. Edit Task Due Date"
+                    }, 10);
+
+                    Func<string, bool> getIntegerValueOneToFour = (string x) => {
+                        return (x == "1" || x == "2" || x == "3" || x == "4"); // if x is 1, 2, 3, or 4
+                    };
+                    string? input = hid.AskQuestion("Which task component would you like to edit", "?", getIntegerValueOneToFour);
+                    int editRequested = int.Parse(input);
+                    Console.WriteLine();
+
+                    switch (editRequested) {
+                        case 1:
+                            name = hid.InputSanitizer("What is the new name of this task", "?", true);
+                            Console.Clear();
+                            break;
+                        case 2:
+                            WriteLine("You have a few options for the next prompt. 0/Tiny 1/Small 2/Medium 3/Large 4/Huge", 5);
+                            size = hid.AskQuestion("What is the new size of this task", "?", algo.checkTaskSize);
+
+                            sizeConverter.TryGetValue(size, out sizeValue);
+                            taskInstancesPtr[index].SetSize(sizeValue);
+                            break;
+                        case 3:
+                            WriteLine("You have a few options for the next prompt. 0/None 1/Low 2/Medium 3/High 4/Urgent", 5);
+                            priority = hid.AskQuestion("What is the new priority of this task", "?", algo.checkTaskPriority);
+
+                            priorityConverter.TryGetValue(priority, out priorityValue);
+                            taskInstancesPtr[index].SetPriority(priorityValue);
+                            break;
+                        case 4:
+                            dueDate = hid.AskQuestion("What is the new due date for this task", "?", algo.checkDueDate);
+                            dueDateObject = DateTime.Parse(dueDate);
+
+                            taskInstancesPtr[index].SetDueDate(dueDateObject);
+                            break;
+                    }
 
 
                     break;
 
                 case InputManager.UserInput.listCommands:
                     Console.Clear();
-                    List<List<string>> listOfCommands = hid.FetchCommandList();
+                    List<InputManager.command> listOfCommands = hid.FetchCommandList();
                     hid.WriteLine("Command List", 5);
                     Console.WriteLine("\n");
 
                     for (int i = 0; i < listOfCommands.Count(); i++) {
-                        hid.WriteLine($"Command: {listOfCommands[i][0]}", 5);
-                        for (int j = 0; j < (hid.GetMaxCommandLength() - listOfCommands[i][0].Length); j++) {
+                        hid.WriteLine($"Command: {listOfCommands[i].commandName}", 5);
+                        for (int j = 0; j < (hid.GetMaxCommandLength() - listOfCommands[i].commandName.Length); j++) {
                             Console.Write(" ");
                         }
 
                         Console.Write(" | ");
                         hid.WriteLine("Aliases: ", 5);
 
-                        for (int j = 1; j < listOfCommands[i].Count(); j++) {
-                            hid.WriteLine("\"" + listOfCommands[i][j] + "\" ", 5);
+                        for (int j = 0; j < listOfCommands[i].aliases.Count(); j++) {
+                            hid.WriteLine("\"" + listOfCommands[i].aliases[j] + "\" ", 5);
                         }
 
                         Console.WriteLine();
