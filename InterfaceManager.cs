@@ -186,17 +186,17 @@
                     "3. Edit Task Priority",
                     "4. Edit Task Due Date"
                     }, 10);
+                    Console.WriteLine();
 
-                    Func<string, bool> getIntegerValueOneToFour = (string x) => {
-                        return (x == "1" || x == "2" || x == "3" || x == "4"); // if x is 1, 2, 3, or 4
-                    };
-                    string? input = hid.utils.AskQuestion("Which task component would you like to edit", "?", getIntegerValueOneToFour);
+                    string? input = hid.utils.AskQuestion("Which task component would you like to edit", "?", algo.getIntegerValueOneToFour);
                     int editRequested = int.Parse(input);
                     Console.WriteLine();
 
                     switch (editRequested) {
                         case 1:
                             name = hid.utils.InputSanitizer("What is the new name of this task", "?", true);
+
+                            taskInstancesPtr[index].SetName(name);
                             Console.Clear();
                             break;
                         case 2:

@@ -19,5 +19,9 @@
         public Func<string, bool> checkDueDate = (string x) => {
             return DateTime.TryParse(x, out _);
         };
+
+        public Func<string, bool> getIntegerValueOneToFour = (string x) => {
+            return (x == "1" || x == "2" || x == "3" || x == "4"); // if x is 1, 2, 3, or 4
+        };
     }
 }
