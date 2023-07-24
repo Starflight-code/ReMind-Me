@@ -1,24 +1,61 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace reMind_me {
     internal class DateManager {
         public DateManager() {
         }
-        public DateTime getCurrentDateTime() {
+        public DateTime GetCurrentDateTime() {
             return DateTime.Now;
         }
-        public int getDaysBetween(DateTime toCompare, DateTime toCompareTo) {
+        public int GetDaysBetween(DateTime toCompare, DateTime toCompareTo) {
             return toCompare.Subtract(toCompareTo).Days;
         }
-        public bool isPast(DateTime toCompare) {
+
+        public int GetDaysFromNow(DateTime toCompare) {
+            return toCompare.Subtract(DateTime.Now).Days;
+        }
+
+        public bool IsPast(DateTime toCompare) {
             return DateTime.Now.CompareTo(toCompare) > 0 && !DateOnly.Equals(DateOnly.FromDateTime(DateTime.Now), DateOnly.FromDateTime(toCompare));
         }
-        public string timeOfDay() {
+
+        /**
+         * Datebase string should be formatted as YEAR-MONTH-DAY-HOUR-MINUTE-SECOND
+         */
+        public DateTime FromDatabaseString(string dateString) {
+            string[] brokenUpDate = dateString.Trim().Split('-');
+            if (brokenUpDate.Length != 6) {
+                return new DateTime();
+            }
+            List<int> dateComponents = new List<int>();
+            try {
+                for (int i = 0; i < brokenUpDate.Length; i++) {
+                    dateComponents.Add(Int32.Parse(brokenUpDate[i]));
+                }
+            }
+            catch {
+                return new DateTime();
+            }
+            return new DateTime(dateComponents[0], dateComponents[1], dateComponents[2], dateComponents[3], dateComponents[4], dateComponents[5]);
+        }
+
+        public string ToDatabaseString(DateTime instance) {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(instance.Year);
+            sb.Append('-');
+            sb.Append(instance.Month);
+            sb.Append('-');
+            sb.Append(instance.Day);
+            sb.Append('-');
+            sb.Append(instance.Hour);
+            sb.Append('-');
+            sb.Append(instance.Minute);
+            sb.Append('-');
+            sb.Append(instance.Second);
+            return sb.ToString();
+        }
+
+        public string TimeOfDay() {
             string time;
             int timeNow = DateTime.Now.Hour;
             if (timeNow < 12) {
